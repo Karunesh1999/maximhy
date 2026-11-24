@@ -53,6 +53,13 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
   // Mock notification items
   const [notifications, setNotifications] = useState([
     {
+      id: 'announcement',
+      title: 'Special Store Offers & Delivery',
+      desc: 'Free shipping on orders over $39.99 • Same-Day dispatch before 2:00 PM EST • 5% wholesale bulk savings on cases.',
+      time: 'Ongoing',
+      unread: true,
+    },
+    {
       id: '1',
       title: 'Auto-Delivery Dispatched',
       desc: 'Your monthly MyPeriodPlan™ shipment is on its way.',
@@ -283,7 +290,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({ isOpen, onClose }) =
                   <div className="flex items-center gap-1.5">
                     {notifications.some((n) => n.unread) && (
                       <span className="text-[10px] bg-rose-500 text-white font-bold px-1.5 py-0.5 rounded-full">
-                        2 new
+                        {notifications.filter((n) => n.unread).length} new
                       </span>
                     )}
                     <ChevronRight className="w-4 h-4 text-neutral-400" />

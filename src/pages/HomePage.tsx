@@ -1,22 +1,26 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import {
-  Mail,
-  Bell,
-  ChevronRight
-} from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { ProductDetailModal } from '../components/ProductDetailModal'
 
-// Priority list of the 6 most common & essential products women require frequently
-const CORE_ESSENTIAL_IDS = [
+// Featured products listed on maximhy.com homepage
+const FEATURED_PRODUCT_IDS = [
   'cardboard-tampons',
+  'tampons-cardboard-super',
+  'cardboard-applicator-superplus-pack',
   'plastic-tampons',
+  'plastic-applicator-super-pack',
   'ultra-thin-pads',
+  'pads-ultra-thin-super-night-pack',
   'organic-pantiliners',
+  'maxion-pads',
   'intimate-wipes',
-  'maxion-pads'
+  'baby-wipes',
+  'cotton-rounds',
+  'maternity-nursing',
+  'period-underwear'
 ]
 
 // Category-wise sections configuration for Home Page
@@ -34,13 +38,10 @@ const CATEGORY_SECTIONS: {
 
 export const HomePage: React.FC = () => {
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
-  const [notificationOpen, setNotificationOpen] = useState(false)
 
-  // Curated Featured Products list - with everyday essentials listed first
+  // Curated Featured Products matching maximhy.com homepage picks
   const displayedProducts = useMemo(() => {
-    const core = CORE_ESSENTIAL_IDS.map((id) => PRODUCTS.find((p) => p.id === id)).filter(Boolean) as Product[]
-    const others = PRODUCTS.filter((p) => !CORE_ESSENTIAL_IDS.includes(p.id))
-    return [...core, ...others]
+    return FEATURED_PRODUCT_IDS.map((id) => PRODUCTS.find((p) => p.id === id)).filter(Boolean) as Product[]
   }, [])
 
   const carouselRef = useRef<HTMLDivElement>(null)
@@ -55,53 +56,6 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5 p-4 pb-28">
-      {/* 1. Top Section / Greeting Row matching the uploaded image */}
-      <div className="flex items-center justify-between pt-1">
-        <div className="flex flex-col">
-          <span className="text-xs text-neutral-500 font-medium">Welcome,</span>
-          <span className="text-lg font-bold text-neutral-900 tracking-tight">
-            Pure &amp; Clean Living
-          </span>
-        </div>
-
-        {/* Quick action buttons: Message & Notification with badge */}
-        <div className="flex items-center gap-2">
-          <Link
-            to="/faq"
-            className="w-10 h-10 rounded-full bg-white border border-black/8 flex items-center justify-center text-neutral-700 hover:text-black hover:bg-neutral-50 shadow-2xs transition-all active:scale-95"
-            aria-label="Support &amp; FAQ"
-          >
-            <Mail className="w-4 h-4" />
-          </Link>
-
-          <button
-            onClick={() => setNotificationOpen(!notificationOpen)}
-            className="relative w-10 h-10 rounded-full bg-white border border-black/8 flex items-center justify-center text-neutral-700 hover:text-black hover:bg-neutral-50 shadow-2xs transition-all active:scale-95"
-            aria-label="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
-              3
-            </span>
-          </button>
-        </div>
-      </div>
-
-      {/* Notifications Drawer */}
-      {notificationOpen && (
-        <div className="bg-white border border-black/8 rounded-2xl p-3 shadow-md animate-in fade-in duration-150 text-xs flex flex-col gap-2">
-          <div className="flex items-center justify-between border-b border-black/5 pb-1.5 font-bold text-neutral-900">
-            <span>Special Announcements</span>
-            <span className="text-[10px] text-secondary font-semibold">Active Offers</span>
-          </div>
-          <div className="flex flex-col gap-1.5 text-neutral-600 text-[11px]">
-            <p>• <strong>Free Shipping:</strong> Automatically applied on all orders over $39.99.</p>
-            <p>• <strong>Same-Day Dispatch:</strong> Orders before 2:00 PM EST ship today.</p>
-            <p>• <strong>Bulk Savings:</strong> Cases of 12 include a built-in 5% wholesale discount.</p>
-          </div>
-        </div>
-      )}
-
       {/* 3. Horizontal Promo Banner Carousel matching the uploaded image */}
       <div className="flex gap-3.5 overflow-x-auto no-scrollbar py-1 snap-x snap-mandatory">
         {/* Banner Card 1: Warm Amber/Berry Organic Cotton Card */}
