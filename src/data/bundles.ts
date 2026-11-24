@@ -8,7 +8,7 @@ export const BUNDLES: BundleItem[] = [
     price: 28.54,
     originalPrice: 29.42,
     saveAmount: 0.88,
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/pads-classic-maxi.jpg',
     itemsIncluded: [
       '1x Light Pantiliners Wrapped (30ct)',
       '1x Classic Contour Unwrapped (30ct)',
@@ -24,7 +24,7 @@ export const BUNDLES: BundleItem[] = [
     price: 29.90,
     originalPrice: 31.49,
     saveAmount: 1.59,
-    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/pads-ultrathin-day.jpg',
     itemsIncluded: [
       '1x Ultra Thin Day Pads with Wings (14ct)',
       '1x Overnight Heavy Pads (10ct)',
@@ -41,7 +41,7 @@ export const BUNDLES: BundleItem[] = [
     price: 33.52,
     originalPrice: 35.28,
     saveAmount: 1.76,
-    image: 'https://images.unsplash.com/photo-1608248597359-33b1e7c5b967?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/bundle-tampons-combo.jpg',
     itemsIncluded: [
       '2x Regular Plastic Tampons (32ct total)',
       '2x Super Plastic Tampons (28ct total)'
@@ -56,7 +56,7 @@ export const BUNDLES: BundleItem[] = [
     price: 10.67,
     originalPrice: 11.07,
     saveAmount: 0.40,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    image: '/images/products/wipes-facial.jpg',
     itemsIncluded: [
       '1x Intimate Wipes (20ct)',
       '1x Baby Gentle Clean Wipes (44ct)',
