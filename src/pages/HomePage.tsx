@@ -14,11 +14,7 @@ import {
   Flower2,
   ShieldCheck,
   ChevronRight,
-  Plus,
-  Award,
-  Globe,
-  Shield,
-  Check
+  Plus
 } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
@@ -42,12 +38,6 @@ export const HomePage: React.FC = () => {
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
   const [notificationOpen, setNotificationOpen] = useState(false)
-  const [monthsOfCare, setMonthsOfCare] = useState(12)
-
-  // Environmental impact calculation:
-  const plasticPoundsSaved = (monthsOfCare * 1.5).toFixed(1)
-  const plasticBottlesEquivalent = Math.round(monthsOfCare * 8)
-  const chemicalsAvoidedPounds = (monthsOfCare * 0.4).toFixed(1)
 
   // Circular Category Icons matching the layout of the uploaded image
   const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
@@ -157,6 +147,42 @@ export const HomePage: React.FC = () => {
         </Link>
       </div>
 
+      {/* 4. Circular Category Icons Row matching the uploaded image */}
+      <div className="flex items-center justify-between gap-1 overflow-x-auto no-scrollbar py-1">
+        {categoryIcons.map((item) => {
+          const Icon = item.icon
+          const isSelected = selectedCategory === item.key
+
+          return (
+            <button
+              key={item.key}
+              onClick={() => setSelectedCategory(item.key)}
+              className="flex flex-col items-center gap-1.5 min-w-[56px] transition-transform active:scale-95"
+            >
+              {/* Circular Icon Pill matching image */}
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                  isSelected
+                    ? 'bg-neutral-900 text-white shadow-sm ring-2 ring-neutral-900/20'
+                    : 'bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
+
+              {/* Label underneath */}
+              <span
+                className={`text-[11px] tracking-tight ${
+                  isSelected ? 'font-bold text-neutral-900' : 'text-neutral-500 font-medium'
+                }`}
+              >
+                {item.label}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
       {/* 3. Horizontal Promo Banner Carousel matching the uploaded image */}
       <div className="flex gap-3.5 overflow-x-auto no-scrollbar py-1 snap-x snap-mandatory">
         {/* Banner Card 1: Warm Amber/Berry Organic Cotton Card */}
@@ -254,41 +280,7 @@ export const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Circular Category Icons Row matching the uploaded image */}
-      <div className="flex items-center justify-between gap-1 overflow-x-auto no-scrollbar py-1">
-        {categoryIcons.map((item) => {
-          const Icon = item.icon
-          const isSelected = selectedCategory === item.key
-
-          return (
-            <button
-              key={item.key}
-              onClick={() => setSelectedCategory(item.key)}
-              className="flex flex-col items-center gap-1.5 min-w-[56px] transition-transform active:scale-95"
-            >
-              {/* Circular Icon Pill matching image */}
-              <div
-                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
-                  isSelected
-                    ? 'bg-neutral-900 text-white shadow-sm ring-2 ring-neutral-900/20'
-                    : 'bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs'
-                }`}
-              >
-                <Icon className="w-5 h-5" />
-              </div>
-
-              {/* Label underneath */}
-              <span
-                className={`text-[11px] tracking-tight ${
-                  isSelected ? 'font-bold text-neutral-900' : 'text-neutral-500 font-medium'
-                }`}
-              >
-                {item.label}
-              </span>
-            </button>
-          )
-        })}
-      </div>
+     
 
       {/* 5. "Featured Products" Section matching the uploaded image */}
       <div className="flex flex-col gap-3">
@@ -399,146 +391,7 @@ export const HomePage: React.FC = () => {
         </div>
       </div>
 
-      {/* 6. Integrated About & Brand Trust Section with Generous Vertical Spacing & Padding */}
-      <div id="about" className="flex flex-col gap-7 mt-6 pt-6 pb-4 border-t border-black/8 scroll-mt-20">
-        {/* Brand Story Hero Card with proper p-5 sm:p-6 padding */}
-        <div className="bg-white border border-black/6 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col gap-4">
-          <div className="flex items-center justify-between">
-            <span className="inline-flex items-center gap-1.5 text-[10px] font-bold text-secondary uppercase tracking-wider bg-secondary/10 px-2.5 py-1 rounded-full">
-              <Leaf className="w-3.5 h-3.5" /> Founded in 2008
-            </span>
-            <span className="text-[11px] font-semibold text-neutral-400">Mother &amp; Daughter Vision</span>
-          </div>
-
-          <div className="aspect-16/9 rounded-2xl overflow-hidden bg-neutral-100 border border-black/5">
-            <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80"
-              alt="Rebecca Baum, Founder of Maxim Hygiene"
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-
-          <div className="space-y-1.5">
-            <h3 className="text-base font-bold text-neutral-900 leading-snug">
-              The Maxim Hygiene Story
-            </h3>
-            <p className="text-xs text-neutral-600 leading-relaxed">
-              Founded by <strong>Rebecca Baum</strong>, Maxim Hygiene was born from a personal awakening. Conventional pads and tampons often contain synthetic plastic mesh, wood pulp, and chlorine bleach residues. Rebecca created the first complete line of 100% certified organic cotton feminine care to give women uncompromising pure protection.
-            </p>
-          </div>
-        </div>
-
-        {/* 4 Clean Cotton Pillars with Breathing Room */}
-        <div className="space-y-3">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 px-1">
-            Our 4 Pure Cotton Promises
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-white p-4 rounded-2xl border border-black/6 shadow-2xs flex flex-col gap-2">
-              <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                <Leaf className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-neutral-900">100% Organic Cotton</h4>
-              <p className="text-[10px] text-neutral-500 leading-normal">
-                Pure GOTS certified cotton core with zero synthetic plastic mesh.
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-2xl border border-black/6 shadow-2xs flex flex-col gap-2">
-              <div className="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
-                <Shield className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-neutral-900">Total Chlorine-Free</h4>
-              <p className="text-[10px] text-neutral-500 leading-normal">
-                Never bleached with chlorine. Zero dioxin toxins ever touch your body.
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-2xl border border-black/6 shadow-2xs flex flex-col gap-2">
-              <div className="w-8 h-8 rounded-full bg-amber-500/10 text-amber-600 flex items-center justify-center">
-                <Heart className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-neutral-900">Hypoallergenic</h4>
-              <p className="text-[10px] text-neutral-500 leading-normal">
-                Breathable, soft fibers prevent chafing, sweat rash, and irritation.
-              </p>
-            </div>
-
-            <div className="bg-white p-4 rounded-2xl border border-black/6 shadow-2xs flex flex-col gap-2">
-              <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                <Globe className="w-4 h-4" />
-              </div>
-              <h4 className="text-xs font-bold text-neutral-900">Biodegradable</h4>
-              <p className="text-[10px] text-neutral-500 leading-normal">
-                Naturally compostable organic fibers that decompose safely into earth.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Interactive Personal Planet Impact Calculator */}
-        <div className="bg-white border border-black/6 rounded-3xl p-5 sm:p-6 shadow-2xs flex flex-col gap-3.5">
-          <div className="flex items-center justify-between">
-            <h3 className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span>Your Personal Planet Impact</span>
-            </h3>
-            <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
-              {monthsOfCare} Months
-            </span>
-          </div>
-
-          <p className="text-[11px] text-neutral-500 leading-normal">
-            Slide to see your plastic and chemical reduction by switching to Maxim:
-          </p>
-
-          <input
-            type="range"
-            min="1"
-            max="36"
-            value={monthsOfCare}
-            onChange={(e) => setMonthsOfCare(Number(e.target.value))}
-            className="w-full accent-primary cursor-pointer my-1"
-          />
-
-          <div className="grid grid-cols-3 gap-2 bg-neutral-50 p-3 rounded-2xl text-center border border-black/5 mt-1">
-            <div>
-              <div className="font-bold text-sm text-secondary">{plasticBottlesEquivalent}</div>
-              <div className="text-[9px] text-neutral-500 mt-0.5">Bottles Diverted</div>
-            </div>
-            <div>
-              <div className="font-bold text-sm text-primary">{plasticPoundsSaved} lbs</div>
-              <div className="text-[9px] text-neutral-500 mt-0.5">Plastic Waste Saved</div>
-            </div>
-            <div>
-              <div className="font-bold text-sm text-neutral-900">{chemicalsAvoidedPounds} lbs</div>
-              <div className="text-[9px] text-neutral-500 mt-0.5">Bleach Averted</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Certifications Strip */}
-        <div className="bg-neutral-50 p-4 sm:p-5 rounded-2xl border border-black/5 flex flex-col gap-2.5">
-          <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
-            <Award className="w-4 h-4 text-primary" /> Global Certifications &amp; Standards
-          </span>
-          <div className="grid grid-cols-2 gap-2.5 text-[10px] text-neutral-600 font-medium pt-1">
-            <div className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-secondary" /> GOTS Global Organic
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-secondary" /> ICEA Certified Eco
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-secondary" /> Cruelty-Free Leaping Bunny
-            </div>
-            <div className="flex items-center gap-1.5">
-              <Check className="w-3.5 h-3.5 text-secondary" /> HSA/FSA Eligible
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
       {/* Interactive Product Details Modal */}
       <ProductDetailModal

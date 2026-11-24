@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Search, Heart, Plus, Check, Sparkles, X } from 'lucide-react'
+import { Search, Heart, Plus, Check, X } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { useCart } from '../context/CartContext'
@@ -59,17 +59,6 @@ export const ShopPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5 p-4 pb-28">
-      {/* Editorial Headline matching Image 1 */}
-      <div className="pt-1 px-1">
-        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
-          <Sparkles className="w-3 h-3 text-secondary" /> 100% Certified Organic Cotton
-        </div>
-        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
-          Pure care as<br />
-          <span className="font-serif italic text-primary">always for you</span>
-        </h1>
-      </div>
-
       {/* Minimal Search Pill matching Image 1 */}
       <div className="relative">
         <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
