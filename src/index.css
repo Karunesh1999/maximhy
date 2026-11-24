@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* 
+      Centralized Semantic Design Tokens 
+      Maxim Hygiene Brand Palette:
+      - Primary Berry: #93004D -> 329 100% 29%
+      - Primary Container: #B81D65 -> 332 73% 42%
+      - Forest Green: #2A6A48 -> 149 43% 29%
+      - Warm Organic Cream: #FDF9F5 -> 30 50% 98%
+      - Charcoal: #1C1C19 -> 60 6% 11%
+      - Blush Rose: #FCDAE2 -> 346 88% 92%
+      - Border / Outline: #DFBEC6 -> 344 33% 81%
+    */
+    --background: 30 50% 98%;
+    --foreground: 60 6% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 60 6% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 60 6% 11%;
+
+    --primary: 329 100% 29%;
+    --primary-foreground: 0 0% 100%;
+    --primary-container: 332 73% 42%;
+    --on-primary-container: 346 100% 91%;
+
+    --secondary: 149 43% 29%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-container: 142 66% 80%;
+    --on-secondary-container: 148 40% 31%;
+
+    --muted: 30 20% 93%;
+    --muted-foreground: 344 16% 30%;
+
+    --accent: 346 88% 92%;
+    --accent-foreground: 329 100% 29%;
+
+    --destructive: 0 75% 42%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 344 33% 81%;
+    --input: 344 33% 81%;
+    --ring: 329 100% 29%;
+
+    --surface: 30 50% 98%;
+    --surface-dim: 30 10% 86%;
+    --surface-container: 30 19% 93%;
+    --surface-container-low: 30 28% 96%;
+    --surface-container-lowest: 0 0% 100%;
+    --surface-container-high: 30 11% 91%;
+    --surface-variant: 346 88% 92%;
+
+    --outline: 344 11% 49%;
+    --outline-variant: 344 33% 81%;
+
+    --inverse-surface: 40 3% 19%;
+    --inverse-on-surface: 30 22% 94%;
+
+    --success: 149 43% 29%;
+    --success-foreground: 0 0% 100%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 40 8% 7%;
+    --foreground: 30 11% 89%;
+
+    --card: 40 7% 10%;
+    --card-foreground: 30 11% 89%;
+
+    --popover: 40 7% 10%;
+    --popover-foreground: 30 11% 89%;
+
+    --primary: 343 100% 85%;
+    --primary-foreground: 330 100% 20%;
+    --primary-container: 332 73% 42%;
+    --on-primary-container: 346 100% 91%;
+
+    --secondary: 142 46% 71%;
+    --secondary-foreground: 154 100% 11%;
+    --secondary-container: 152 70% 20%;
+    --on-secondary-container: 142 37% 65%;
+
+    --muted: 40 4% 15%;
+    --muted-foreground: 344 16% 70%;
+
+    --accent: 344 16% 30%;
+    --accent-foreground: 343 100% 85%;
+
+    --destructive: 6 100% 83%;
+    --destructive-foreground: 356 100% 21%;
+
+    --border: 344 16% 30%;
+    --input: 344 16% 30%;
+    --ring: 343 100% 85%;
+
+    --surface: 40 8% 7%;
+    --surface-dim: 40 8% 7%;
+    --surface-container: 60 5% 12%;
+    --surface-container-low: 60 6% 11%;
+    --surface-container-lowest: 40 17% 5%;
+    --surface-container-high: 40 4% 16%;
+    --surface-variant: 344 16% 30%;
+
+    --outline: 345 14% 60%;
+    --outline-variant: 344 16% 30%;
+
+    --inverse-surface: 30 11% 89%;
+    --inverse-on-surface: 40 3% 19%;
+
+    --success: 142 46% 71%;
+    --success-foreground: 154 100% 11%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+  }
+}
+
+/* Custom scrollbar and utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

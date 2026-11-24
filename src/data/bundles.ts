@@ -1,0 +1,125 @@
+import type { BundleItem, SubscriptionItem } from '../types'
+
+export const BUNDLES: BundleItem[] = [
+  {
+    id: 'bundle-pantiliners-3pack',
+    title: 'Pantiliners 3-Pack',
+    subtitle: '90ct · Wrapped, Unwrapped, Thong',
+    price: 28.54,
+    originalPrice: 29.42,
+    saveAmount: 0.88,
+    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&auto=format&fit=crop&q=80',
+    itemsIncluded: [
+      '1x Light Pantiliners Wrapped (30ct)',
+      '1x Classic Contour Unwrapped (30ct)',
+      '1x Organic Thong Liners (30ct)'
+    ],
+    description: 'The ultimate daily freshness trio. Enjoy total versatility across all lingerie and activewear with 100% pure organic cotton breathability.',
+    savingsBadge: 'Save $0.88'
+  },
+  {
+    id: 'bundle-pads-wipes-4pack',
+    title: 'Pads & Wipes 4-Pack',
+    subtitle: '64ct · Day, Night, Liners, Wipes',
+    price: 29.90,
+    originalPrice: 31.49,
+    saveAmount: 1.59,
+    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=600&auto=format&fit=crop&q=80',
+    itemsIncluded: [
+      '1x Ultra Thin Day Pads with Wings (14ct)',
+      '1x Overnight Heavy Pads (10ct)',
+      '1x Organic Pantiliners (20ct)',
+      '1x Intimate Cleansing Wipes (20ct)'
+    ],
+    description: 'Complete cycle harmony from light spotting to heavy overnight flows, finished with pH-balanced organic cleansing wipes.',
+    savingsBadge: 'Save $1.59'
+  },
+  {
+    id: 'bundle-plastic-tampons-4pack',
+    title: 'Plastic Tampons 4-Pack',
+    subtitle: '60ct · Regular & Super Mix',
+    price: 33.52,
+    originalPrice: 35.28,
+    saveAmount: 1.76,
+    image: 'https://images.unsplash.com/photo-1608248597359-33b1e7c5b967?w=600&auto=format&fit=crop&q=80',
+    itemsIncluded: [
+      '2x Regular Plastic Tampons (32ct total)',
+      '2x Super Plastic Tampons (28ct total)'
+    ],
+    description: 'Stock up for 3 full cycles with smooth comfort BPA-free applicators and 100% certified organic cotton fiber cores.',
+    savingsBadge: 'Save $1.76'
+  },
+  {
+    id: 'bundle-organic-wipes-3pack',
+    title: 'Organic Wipes 3-Pack',
+    subtitle: '114ct · Baby, Facial & Intimate',
+    price: 10.67,
+    originalPrice: 11.07,
+    saveAmount: 0.40,
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    itemsIncluded: [
+      '1x Intimate Wipes (20ct)',
+      '1x Baby Gentle Clean Wipes (44ct)',
+      '1x Facial Cleansing Wipes (50ct)'
+    ],
+    description: 'Pure water-based organic cotton wipes for the entire family. Unscented, hypoallergenic, and 100% biodegradable.',
+    savingsBadge: 'Save $0.40'
+  }
+]
+
+export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
+  {
+    id: 'sub-cardboard-tampons',
+    name: 'Cardboard Tampons (16ct)',
+    subtitle: '100% Organic Cotton · Regular Flow',
+    regularPrice: 10.57,
+    subscriptionPrice: 9.51,
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: true,
+  },
+  {
+    id: 'sub-ultra-thin-pads',
+    name: 'Ultra Thin Pads (14ct)',
+    subtitle: 'Daytime with Wings · Breathable Protection',
+    regularPrice: 9.38,
+    subscriptionPrice: 8.44,
+    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: true,
+  },
+  {
+    id: 'sub-organic-pantiliners',
+    name: 'Organic Pantiliners (35ct)',
+    subtitle: 'Daily Freshness · Soft & Contour Fit',
+    regularPrice: 10.02,
+    subscriptionPrice: 9.02,
+    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: false,
+  },
+  {
+    id: 'sub-intimate-wipes',
+    name: 'Intimate Wipes (20ct)',
+    subtitle: 'Unscented · pH-Balanced Botanical Infusion',
+    regularPrice: 3.69,
+    subscriptionPrice: 3.32,
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: false,
+  },
+  {
+    id: 'sub-makeup-ovals',
+    name: 'Makeup Ovals (50ct)',
+    subtitle: 'Dual-Sided Organic Cotton Facial Pads',
+    regularPrice: 6.49,
+    subscriptionPrice: 5.84,
+    image: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: false,
+  },
+  {
+    id: 'sub-maxrelief-lotion',
+    name: 'MaxRelief Lotion (4 oz)',
+    subtitle: 'CBD Soothing Menstrual Cramp Balm',
+    regularPrice: 29.99,
+    subscriptionPrice: 26.99,
+    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=600&auto=format&fit=crop&q=80',
+    defaultSelected: false,
+  }
+]
