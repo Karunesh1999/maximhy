@@ -1,6 +1,20 @@
 import React, { useState, useMemo, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Search, Heart, Plus, Check, X } from 'lucide-react'
+import {
+  Search,
+  SlidersHorizontal,
+  Heart,
+  Plus,
+  Check,
+  X,
+  Sparkles,
+  Leaf,
+  Layers,
+  Droplets,
+  Flower2,
+  ShieldCheck,
+  Feather
+} from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { useCart } from '../context/CartContext'
@@ -12,6 +26,9 @@ export const ShopPage: React.FC = () => {
   const categoryParam = (searchParams.get('category') as ProductCategory) || 'all'
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<ProductCategory>(categoryParam)
+  const [showFilterSheet, setShowFilterSheet] = useState(false)
+  const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured')
+  const [hsaOnly, setHsaOnly] = useState(false)
 
   useEffect(() => {
     if (categoryParam) {
@@ -22,27 +39,38 @@ export const ShopPage: React.FC = () => {
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
 
-  const categories: { key: ProductCategory; label: string }[] = [
-    { key: 'all', label: 'All' },
-    { key: 'tampons', label: 'Tampons' },
-    { key: 'pads-liners', label: 'Pads & Liners' },
-    { key: 'wipes', label: 'Wipes' },
-    { key: 'beauty', label: 'Beauty' },
-    { key: 'maternity', label: 'Maternity' },
-    { key: 'underwear', label: 'Underwear' },
+  const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
+    { key: 'all', label: 'All', icon: Sparkles },
+    { key: 'tampons', label: 'Tampons', icon: Leaf },
+    { key: 'pads-liners', label: 'Pads', icon: Layers },
+    { key: 'wipes', label: 'Wipes', icon: Droplets },
+    { key: 'beauty', label: 'Beauty', icon: Flower2 },
+    { key: 'maternity', label: 'Maternity', icon: ShieldCheck },
+    { key: 'underwear', label: 'Underwear', icon: Feather },
   ]
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((product) => {
+    let result = PRODUCTS.filter((product) => {
       const matchesCategory =
         activeCategory === 'all' || product.category === activeCategory
       const matchesSearch =
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.tagline.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchesCategory && matchesSearch
+      const matchesHsa = !hsaOnly || !!product.hsaFsaEligible
+      return matchesCategory && matchesSearch && matchesHsa
     })
-  }, [activeCategory, searchQuery])
+
+    if (sortBy === 'price-low') {
+      result = [...result].sort((a, b) => a.packPrice - b.packPrice)
+    } else if (sortBy === 'price-high') {
+      result = [...result].sort((a, b) => b.packPrice - a.packPrice)
+    } else if (sortBy === 'rating') {
+      result = [...result].sort((a, b) => b.rating - a.rating)
+    }
+
+    return result
+  }, [activeCategory, searchQuery, sortBy, hsaOnly])
 
   const toggleProductType = (productId: string, type: 'pack' | 'case', e: React.MouseEvent) => {
     e.stopPropagation()
@@ -68,41 +96,125 @@ export const ShopPage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5 p-4 pb-28">
-      {/* Minimal Search Pill matching Image 1 */}
-      <div className="relative">
-        <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search tampons, pads, wipes, beauty..."
-          className="w-full bg-white/90 border border-black/8 rounded-full pl-10 pr-9 py-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-900 focus:bg-white placeholder:text-neutral-400 transition-all shadow-2xs"
-        />
-        {searchQuery && (
-          <button
-            onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-1"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
-        )}
+      {/* Search Bar with Filter Icon matching design */}
+      <div className="relative flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search organic tampons, pads, wipes..."
+            className="w-full bg-white border border-black/8 rounded-full pl-10 pr-9 py-2.5 text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-900 shadow-2xs"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowFilterSheet(!showFilterSheet)}
+          className={`w-10 h-10 rounded-full bg-white border border-black/8 flex items-center justify-center shadow-2xs shrink-0 active:scale-95 transition-all ${
+            showFilterSheet || sortBy !== 'featured' || hsaOnly
+              ? 'text-primary border-primary/40 bg-primary/5'
+              : 'text-neutral-700 hover:text-black hover:bg-neutral-50'
+          }`}
+          aria-label="Filter & Sort products"
+        >
+          <SlidersHorizontal className="w-4 h-4" />
+        </button>
       </div>
 
-      {/* Category Pills matching Image 1 */}
-      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 -mx-1 px-1">
-        {categories.map((cat) => {
-          const isActive = activeCategory === cat.key
-          return (
+      {/* Filter / Sort Drawer */}
+      {showFilterSheet && (
+        <div className="bg-white border border-black/8 rounded-2xl p-3 shadow-md animate-in fade-in duration-150 flex flex-col gap-2">
+          <div className="flex items-center justify-between border-b border-black/5 pb-1.5 font-bold text-neutral-900 text-xs">
+            <span>Filter & Sort Products</span>
             <button
-              key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all active:scale-95 ${
-                isActive
-                  ? 'bg-neutral-900 text-white shadow-xs'
-                  : 'bg-white/80 text-neutral-600 hover:text-neutral-900 hover:bg-white border border-black/6 shadow-2xs'
+              onClick={() => {
+                setSortBy('featured')
+                setHsaOnly(false)
+              }}
+              className="text-[10px] text-primary hover:underline font-semibold"
+            >
+              Reset
+            </button>
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            {[
+              { id: 'featured', label: 'Featured' },
+              { id: 'price-low', label: 'Price: Low to High' },
+              { id: 'price-high', label: 'Price: High to Low' },
+              { id: 'rating', label: 'Top Rated ★' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setSortBy(opt.id as any)}
+                className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
+                  sortBy === opt.id
+                    ? 'bg-primary text-white shadow-2xs'
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setHsaOnly(!hsaOnly)}
+              className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
+                hsaOnly
+                  ? 'bg-secondary text-white shadow-2xs'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
               }`}
             >
-              {cat.label}
+              ✓ HSA/FSA Only
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Circular Category Icons Row matching design */}
+      <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1 px-0.5">
+        {categoryIcons.map((item) => {
+          const Icon = item.icon
+          const isActive = activeCategory === item.key
+
+          return (
+            <button
+              key={item.key}
+              type="button"
+              onClick={() => setActiveCategory(item.key)}
+              className="flex flex-col items-center gap-1.5 min-w-[56px] shrink-0 transition-transform active:scale-95 group"
+            >
+              {/* Circular Icon Pill matching image */}
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                  isActive
+                    ? 'border-2 border-primary text-primary bg-primary/5 shadow-2xs'
+                    : 'bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs group-hover:border-black/20 group-hover:text-primary'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
+
+              {/* Label underneath */}
+              <span
+                className={`text-[11px] tracking-tight transition-colors ${
+                  isActive
+                    ? 'text-primary font-bold'
+                    : 'text-neutral-600 font-medium group-hover:text-neutral-900'
+                }`}
+              >
+                {item.label}
+              </span>
             </button>
           )
         })}

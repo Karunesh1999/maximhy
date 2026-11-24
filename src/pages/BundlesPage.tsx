@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Check, ChevronDown, ChevronUp, PackageCheck, Sparkles, Plus } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, PackageCheck, Plus } from 'lucide-react'
 import { BUNDLES } from '../data/bundles'
 import type { BundleItem } from '../types'
 import { useCart } from '../context/CartContext'
@@ -17,21 +17,7 @@ export const BundlesPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-4 pb-28">
-      {/* Page Title & Subtitle matching Image 1 */}
-      <div className="pt-1 px-1">
-        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
-          <Sparkles className="w-3 h-3 text-secondary" /> Curated Period Care
-        </div>
-        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
-          Bundles &amp;<br />
-          <span className="font-serif italic text-primary">Value Combos</span>
-        </h1>
-        <p className="text-xs text-neutral-500 mt-1 font-medium">
-          Multi-packs with automatic bundle discounts.
-        </p>
-      </div>
-
+    <div className="flex flex-col gap-4 p-4 pb-28">
       {/* List of Bundles */}
       <div className="flex flex-col gap-3.5">
         {BUNDLES.map((bundle) => {

@@ -1,16 +1,9 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
-  Search,
-  SlidersHorizontal,
   Mail,
   Bell,
-  Sparkles,
-  Leaf,
-  Layers,
-  Droplets,
-  Flower2,
-  ShieldCheck
+  ChevronRight
 } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
@@ -26,35 +19,29 @@ const CORE_ESSENTIAL_IDS = [
   'maxion-pads'
 ]
 
+// Category-wise sections configuration for Home Page
+const CATEGORY_SECTIONS: {
+  key: ProductCategory
+  title: string
+}[] = [
+  { key: 'tampons', title: 'Tampons' },
+  { key: 'pads-liners', title: 'Pads & Liners' },
+  { key: 'wipes', title: 'Organic Wipes' },
+  { key: 'beauty', title: 'Beauty & Personal Care' },
+  { key: 'maternity', title: 'Maternity & Postpartum' },
+  { key: 'underwear', title: 'Period Underwear' },
+]
+
 export const HomePage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('')
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
   const [notificationOpen, setNotificationOpen] = useState(false)
 
-  // Circular Category Icons matching the layout of the uploaded image
-  const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
-    { key: 'all', label: 'All', icon: Sparkles },
-    { key: 'tampons', label: 'Tampons', icon: Leaf },
-    { key: 'pads-liners', label: 'Pads', icon: Layers },
-    { key: 'wipes', label: 'Wipes', icon: Droplets },
-    { key: 'beauty', label: 'Beauty', icon: Flower2 },
-    { key: 'maternity', label: 'Maternity', icon: ShieldCheck },
-  ]
-
-  // Curated Featured Products list - completely independent from top category selection
+  // Curated Featured Products list - with everyday essentials listed first
   const displayedProducts = useMemo(() => {
-    if (searchQuery.trim()) {
-      return PRODUCTS.filter((p) =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.tagline.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    }
-
-    // Default to all products with everyday essentials listed first
     const core = CORE_ESSENTIAL_IDS.map((id) => PRODUCTS.find((p) => p.id === id)).filter(Boolean) as Product[]
     const others = PRODUCTS.filter((p) => !CORE_ESSENTIAL_IDS.includes(p.id))
     return [...core, ...others]
-  }, [searchQuery])
+  }, [])
 
   const carouselRef = useRef<HTMLDivElement>(null)
   const [activeCarouselIndex, setActiveCarouselIndex] = useState(0)
@@ -114,53 +101,6 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* 2. Search Bar with Filter Icon matching uploaded image */}
-      <div className="relative flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search organic tampons, pads, wipes..."
-            className="w-full bg-white border border-black/8 rounded-full pl-10 pr-4 py-2.5 text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-900 shadow-2xs"
-          />
-        </div>
-
-        <Link
-          to="/shop"
-          className="w-10 h-10 rounded-full bg-white border border-black/8 flex items-center justify-center text-neutral-700 hover:text-black hover:bg-neutral-50 shadow-2xs shrink-0"
-          aria-label="Filter products"
-        >
-          <SlidersHorizontal className="w-4 h-4" />
-        </Link>
-      </div>
-
-      {/* 4. Circular Category Icons Row - Links directly to Shop categories, unlinked from Featured Products */}
-      <div className="flex items-center justify-between gap-1 overflow-x-auto no-scrollbar py-1">
-        {categoryIcons.map((item) => {
-          const Icon = item.icon
-
-          return (
-            <Link
-              key={item.key}
-              to={item.key === 'all' ? '/shop' : `/shop?category=${item.key}`}
-              className="flex flex-col items-center gap-1.5 min-w-[56px] transition-transform active:scale-95 group"
-            >
-              {/* Circular Icon Pill matching image */}
-              <div className="w-12 h-12 rounded-full bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs group-hover:border-black/20 group-hover:text-primary flex items-center justify-center transition-all">
-                <Icon className="w-5 h-5" />
-              </div>
-
-              {/* Label underneath */}
-              <span className="text-[11px] tracking-tight text-neutral-600 font-medium group-hover:text-neutral-900 group-hover:font-semibold">
-                {item.label}
-              </span>
-            </Link>
-          )
-        })}
-      </div>
 
       {/* 3. Horizontal Promo Banner Carousel matching the uploaded image */}
       <div className="flex gap-3.5 overflow-x-auto no-scrollbar py-1 snap-x snap-mandatory">
@@ -328,7 +268,57 @@ export const HomePage: React.FC = () => {
         )}
       </div>
 
-     
+      {/* Category Wise Sections (2-row, 3-column layout with 3 cards each) */}
+      <div className="flex flex-col gap-7 pt-1">
+        {CATEGORY_SECTIONS.map((sec) => {
+          const categoryProducts = PRODUCTS.filter((p) => p.category === sec.key).slice(0, 3)
+          if (categoryProducts.length === 0) return null
+
+          return (
+            <section key={sec.key} className="flex flex-col gap-2.5">
+              {/* Row 1: Category Header with Title & "See more" Link */}
+              <div className="flex items-center justify-between">
+                <h2 className="text-[15px] sm:text-base font-bold text-neutral-900 font-serif tracking-tight">
+                  {sec.title}
+                </h2>
+                <Link
+                  to={`/shop?category=${sec.key}`}
+                  className="inline-flex items-center gap-0.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+                >
+                  <span>See more</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+
+              {/* Row 2: 3 Columns with 3 Cards (Product Image & Name only) */}
+              <div className="grid grid-cols-3 gap-2.5">
+                {categoryProducts.map((product) => (
+                  <div
+                    key={product.id}
+                    onClick={() => setSelectedProductForModal(product)}
+                    className="flex flex-col items-center group cursor-pointer select-none transition-transform active:scale-95"
+                  >
+                    {/* Minimalist Card Box with Product Image */}
+                    <div className="w-full aspect-square rounded-2xl bg-white border border-black/8 p-2.5 flex items-center justify-center shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                        loading="lazy"
+                      />
+                    </div>
+
+                    {/* Product Name Below Card */}
+                    <span className="text-[11px] font-semibold text-neutral-800 text-center leading-snug line-clamp-2 px-0.5 mt-1.5 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )
+        })}
+      </div>
 
       {/* Interactive Product Details Modal */}
       <ProductDetailModal
