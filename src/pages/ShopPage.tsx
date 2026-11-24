@@ -7,7 +7,7 @@ import {
   Plus,
   Check,
   X,
-  Sparkles,
+  LayoutGrid,
   Leaf,
   Layers,
   Droplets,
@@ -61,7 +61,7 @@ export const ShopPage: React.FC = () => {
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
 
   const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
-    { key: 'all', label: 'All', icon: Sparkles },
+    { key: 'all', label: 'All', icon: LayoutGrid },
     { key: 'tampons', label: 'Tampons', icon: Leaf },
     { key: 'pads-liners', label: 'Pads', icon: Layers },
     { key: 'wipes', label: 'Wipes', icon: Droplets },
