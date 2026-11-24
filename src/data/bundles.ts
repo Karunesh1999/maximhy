@@ -8,7 +8,7 @@ export const BUNDLES: BundleItem[] = [
     price: 28.54,
     originalPrice: 29.42,
     saveAmount: 0.88,
-    image: '/images/products/pads-classic-maxi.jpg',
+    image: '/images/products/bundles/organic-cotton-pantiliners-combo-3-packs.jpg',
     itemsIncluded: [
       '1x Light Pantiliners Wrapped (30ct)',
       '1x Classic Contour Unwrapped (30ct)',
@@ -24,7 +24,7 @@ export const BUNDLES: BundleItem[] = [
     price: 29.90,
     originalPrice: 31.49,
     saveAmount: 1.59,
-    image: '/images/products/pads-ultrathin-day.jpg',
+    image: '/images/products/bundles/organic-cotton-winged-pads-liners-intimate-wipes-4-packs.jpg',
     itemsIncluded: [
       '1x Ultra Thin Day Pads with Wings (14ct)',
       '1x Overnight Heavy Pads (10ct)',
@@ -41,7 +41,7 @@ export const BUNDLES: BundleItem[] = [
     price: 33.52,
     originalPrice: 35.28,
     saveAmount: 1.76,
-    image: '/images/products/bundle-tampons-combo.jpg',
+    image: '/images/products/bundles/bundle-tampons-combo.jpg',
     itemsIncluded: [
       '2x Regular Plastic Tampons (32ct total)',
       '2x Super Plastic Tampons (28ct total)'
@@ -56,7 +56,7 @@ export const BUNDLES: BundleItem[] = [
     price: 10.67,
     originalPrice: 11.07,
     saveAmount: 0.40,
-    image: '/images/products/wipes-facial.jpg',
+    image: '/images/products/bundles/organic-cotton-baby-facial-intimate-wipes-combo-3-packs.jpg',
     itemsIncluded: [
       '1x Intimate Wipes (20ct)',
       '1x Baby Gentle Clean Wipes (44ct)',
@@ -74,7 +74,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: '100% Organic Cotton · Regular Flow',
     regularPrice: 10.57,
     subscriptionPrice: 10.04,
-    image: '/images/products/tampons-cardboard-reg.jpg',
+    image: '/images/products/tampons/tampons-cardboard-reg.jpg',
     defaultSelected: true,
   },
   {
@@ -83,7 +83,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: 'Daytime with Wings · Breathable Protection',
     regularPrice: 9.38,
     subscriptionPrice: 8.91,
-    image: '/images/products/pads-ultrathin-day.jpg',
+    image: '/images/products/pads-liners/pads-ultrathin-day.jpg',
     defaultSelected: true,
   },
   {
@@ -92,7 +92,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: 'Daily Freshness · Soft & Contour Fit',
     regularPrice: 6.71,
     subscriptionPrice: 6.37,
-    image: '/images/products/pads-classic-maxi.jpg',
+    image: '/images/products/pads-liners/pads-classic-maxi.jpg',
     defaultSelected: false,
   },
   {
@@ -101,7 +101,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: 'Unscented · pH-Balanced Botanical Infusion',
     regularPrice: 3.69,
     subscriptionPrice: 3.51,
-    image: '/images/products/wipes-facial.jpg',
+    image: '/images/products/wipes/wipes-facial.jpg',
     defaultSelected: false,
   },
   {
@@ -110,7 +110,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: 'Dual-Sided Organic Cotton Facial Pads',
     regularPrice: 6.49,
     subscriptionPrice: 6.16,
-    image: '/images/products/beauty-cotton-rounds.jpg',
+    image: '/images/products/beauty/beauty-cotton-rounds.jpg',
     defaultSelected: false,
   },
   {
@@ -119,7 +119,7 @@ export const SUBSCRIPTION_ESSENTIALS: SubscriptionItem[] = [
     subtitle: 'Patented Tourmaline & Odor Control',
     regularPrice: 9.98,
     subscriptionPrice: 9.48,
-    image: '/images/products/pads-maxion.jpg',
+    image: '/images/products/pads-liners/pads-maxion.jpg',
     defaultSelected: false,
   }
 ]

@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { Search, Heart, Plus, Check, X } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
@@ -7,8 +8,16 @@ import { ProductDetailModal } from '../components/ProductDetailModal'
 
 export const ShopPage: React.FC = () => {
   const { addItem } = useCart()
+  const [searchParams] = useSearchParams()
+  const categoryParam = (searchParams.get('category') as ProductCategory) || 'all'
   const [searchQuery, setSearchQuery] = useState('')
-  const [activeCategory, setActiveCategory] = useState<ProductCategory>('all')
+  const [activeCategory, setActiveCategory] = useState<ProductCategory>(categoryParam)
+
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam)
+    }
+  }, [categoryParam])
   const [productTypeSelections, setProductTypeSelections] = useState<Record<string, 'pack' | 'case'>>({})
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
