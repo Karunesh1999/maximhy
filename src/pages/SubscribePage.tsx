@@ -37,20 +37,24 @@ export const SubscribePage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      {/* Page Header matching Reference 3 */}
-      <div className="pt-2">
-        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
-          MyPeriodPlan
+    <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* Page Header matching Image 1 */}
+      <div className="pt-1 px-1">
+        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
+          <Sparkles className="w-3 h-3 text-secondary" /> Auto-Delivery Service
+        </div>
+        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
+          MyPeriodPlan™<br />
+          <span className="font-serif italic text-primary">Zero Hassle Care</span>
         </h1>
-        <p className="text-xs text-muted-foreground mt-0.5 font-medium">
-          Save 10% on auto-delivery. Pause or skip anytime.
+        <p className="text-xs text-neutral-500 mt-1 font-medium">
+          Save 5% on every cycle. Pause, edit, or cancel anytime.
         </p>
       </div>
 
-      {/* Delivery Frequency Selector matching Reference 3 */}
-      <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-bold text-foreground">Delivery Frequency</label>
+      {/* Delivery Frequency Selector */}
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-neutral-800">Delivery Cadence</label>
         <div className="grid grid-cols-3 gap-2">
           {(['30', '45', '60'] as DeliveryFrequency[]).map((days) => {
             const isSelected = frequency === days
@@ -59,29 +63,29 @@ export const SubscribePage: React.FC = () => {
                 key={days}
                 type="button"
                 onClick={() => setFrequency(days)}
-                className={`py-2 px-3 rounded-full text-xs font-bold transition-all border ${
+                className={`py-2.5 px-3 rounded-full text-xs font-semibold transition-all border ${
                   isSelected
-                    ? 'bg-primary text-primary-foreground border-primary shadow-xs'
-                    : 'bg-surface-container-lowest text-muted-foreground border-outline-variant hover:border-foreground/40'
+                    ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
+                    : 'bg-white text-neutral-600 border-black/8 hover:border-black/20'
                 }`}
               >
-                {days} Days
+                Every {days} Days
               </button>
             )
           })}
         </div>
       </div>
 
-      {/* Pick Essentials (-10%) matching Reference 3 */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between">
-          <label className="text-xs font-bold text-foreground">Pick Essentials (-10%)</label>
-          <span className="text-[11px] text-secondary font-semibold">
+      {/* Pick Essentials */}
+      <div className="flex flex-col gap-2.5">
+        <div className="flex items-center justify-between px-1">
+          <label className="text-xs font-semibold text-neutral-800">Select Recurring Essentials (-5%)</label>
+          <span className="text-[11px] text-secondary font-bold">
             {selectedItemIds.length} items chosen
           </span>
         </div>
 
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-3">
           {SUBSCRIPTION_ESSENTIALS.map((item) => {
             const isChecked = selectedItemIds.includes(item.id)
 
@@ -89,39 +93,48 @@ export const SubscribePage: React.FC = () => {
               <div
                 key={item.id}
                 onClick={() => toggleItemSelection(item.id)}
-                className={`p-3 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
+                className={`p-3.5 rounded-3xl border transition-all cursor-pointer flex items-center justify-between gap-3.5 ${
                   isChecked
-                    ? 'bg-surface-container-lowest border-secondary ring-1 ring-secondary shadow-xs'
-                    : 'bg-surface-container-lowest border-outline-variant/70 hover:border-outline'
+                    ? 'bg-white border-neutral-900 ring-1 ring-neutral-900 shadow-2xs'
+                    : 'bg-white/80 border-black/6 hover:bg-white'
                 }`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-lg overflow-hidden bg-surface-container-low shrink-0 border border-outline-variant/40">
+                <div className="flex items-center gap-3 min-w-0">
+                  {/* Pastel rounded thumbnail */}
+                  <div className="w-14 h-14 rounded-2xl bg-[#FDECEF] p-1 shrink-0 flex items-center justify-center overflow-hidden">
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
+                      loading="lazy"
                     />
                   </div>
-                  <div>
-                    <h4 className="font-headline font-bold text-xs text-foreground">
+
+                  <div className="flex flex-col min-w-0">
+                    <h4 className="text-xs font-semibold text-neutral-900 truncate">
                       {item.name}
                     </h4>
-                    <p className="text-[11px] text-muted-foreground">
-                      <span className="font-bold text-foreground">
-                        ${item.subscriptionPrice.toFixed(2)}
-                      </span>{' '}
-                      / delivery
+                    <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+                      {item.subtitle}
                     </p>
+                    <div className="flex items-center gap-1.5 mt-1">
+                      <span className="text-xs font-bold text-neutral-900">
+                        ${item.subscriptionPrice.toFixed(2)}
+                      </span>
+                      <span className="text-[10px] text-neutral-400 line-through">
+                        ${item.regularPrice.toFixed(2)}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Checkbox Icon matching Reference 3 */}
-                <div className="shrink-0 text-secondary">
+                <div className="shrink-0 text-neutral-400">
                   {isChecked ? (
-                    <CheckCircle2 className="w-5 h-5 text-secondary fill-secondary-container" />
+                    <div className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-xs">
+                      <Check className="w-3.5 h-3.5 stroke-[2.5]" />
+                    </div>
                   ) : (
-                    <Circle className="w-5 h-5 text-outline-variant" />
+                    <Circle className="w-6 h-6 text-neutral-300 stroke-[1.5]" />
                   )}
                 </div>
               </div>
@@ -130,84 +143,56 @@ export const SubscribePage: React.FC = () => {
         </div>
       </div>
 
-      {/* Subscription Summary Card matching Reference 3 */}
-      <div className="bg-surface-container-lowest border border-outline-variant/80 rounded-2xl p-4 shadow-sm flex flex-col gap-3 mt-1">
-        <div className="flex items-baseline justify-between">
-          <span className="text-xs font-bold text-foreground">Recurring Total</span>
-          <span className="font-headline font-bold text-lg text-primary">
-            ${recurringTotal.toFixed(2)}{' '}
-            <span className="text-xs font-normal text-muted-foreground">/ {frequency} days</span>
+      {/* Plan Summary Bar */}
+      <div className="bg-white border border-black/6 rounded-3xl p-4 shadow-2xs flex flex-col gap-2.5">
+        <div className="flex items-center justify-between text-xs text-neutral-500">
+          <span>Recurring Delivery</span>
+          <span className="font-semibold text-neutral-800">Every {frequency} Days</span>
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-neutral-500">
+          <span>Subscription Savings</span>
+          <span className="font-semibold text-secondary">
+            Save ${totalSavedPerCycle.toFixed(2)} per delivery
           </span>
         </div>
 
-        {totalSavedPerCycle > 0 && (
-          <div className="text-[11px] text-secondary font-semibold flex items-center gap-1">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>You save ${totalSavedPerCycle.toFixed(2)} on every cycle</span>
-          </div>
-        )}
+        <div className="border-t border-black/5 pt-2 flex items-center justify-between text-sm font-bold text-neutral-900">
+          <span>Cycle Total</span>
+          <span className="text-base font-extrabold text-neutral-900">
+            ${recurringTotal.toFixed(2)}
+          </span>
+        </div>
 
-        {/* Start MyPeriodPlan Button matching Reference 3 */}
         <button
           type="button"
-          onClick={handleStartSubscription}
           disabled={selectedItems.length === 0}
-          className={`w-full py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 ${
-            selectedItems.length === 0
-              ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-secondary text-secondary-foreground hover:bg-secondary-container active:scale-[0.98]'
-          }`}
+          onClick={handleStartSubscription}
+          className="w-full bg-neutral-900 text-white py-3.5 px-4 rounded-full font-semibold text-xs shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1 disabled:opacity-40"
         >
-          <span>Start MyPeriodPlan</span>
+          <span>Activate MyPeriodPlan</span>
           <ArrowRight className="w-4 h-4" />
         </button>
-
-        <p className="text-[10px] text-center text-muted-foreground">
-          Free shipping on all subscriptions. Modify, skip or cancel anytime with one click.
-        </p>
       </div>
 
-      {/* Simulated Subscription Activation Modal */}
+      {/* Success Modal */}
       {isSuccessModalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-surface-container-lowest w-full max-w-sm rounded-2xl p-5 shadow-2xl flex flex-col gap-4 text-center">
-            <div className="w-12 h-12 rounded-full bg-secondary-container text-secondary mx-auto flex items-center justify-center">
-              <Check className="w-6 h-6 stroke-[3]" />
+        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-md rounded-t-[36px] sm:rounded-[36px] p-6 shadow-2xl flex flex-col items-center text-center gap-3">
+            <div className="w-14 h-14 rounded-full bg-secondary/15 text-secondary flex items-center justify-center animate-bounce">
+              <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
             </div>
-
-            <div>
-              <h3 className="font-headline font-bold text-xl text-foreground">
-                MyPeriodPlan™ Activated!
-              </h3>
-              <p className="text-xs text-muted-foreground mt-1">
-                Your first cycle box is scheduled and will arrive within 3-5 days.
-              </p>
-            </div>
-
-            <div className="bg-surface-container-low p-3 rounded-xl text-left text-xs space-y-1.5 border border-outline-variant/40">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Frequency:</span>
-                <span className="font-bold text-foreground">Every {frequency} Days</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Recurring Amount:</span>
-                <span className="font-bold text-primary">${recurringTotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Delivery:</span>
-                <span className="font-bold text-secondary">Free Guaranteed</span>
-              </div>
-              <div className="pt-1 border-t border-outline-variant/40">
-                <span className="text-[11px] text-muted-foreground">Items: {selectedItems.map((i) => i.name).join(', ')}</span>
-              </div>
-            </div>
-
+            <h3 className="font-bold text-xl text-neutral-900">
+              MyPeriodPlan Activated!
+            </h3>
+            <p className="text-xs text-neutral-500 max-w-xs">
+              Your {selectedItems.length} selected essentials will be delivered to your doorstep every {frequency} days with zero stress.
+            </p>
             <button
-              type="button"
               onClick={() => setIsSuccessModalOpen(false)}
-              className="w-full bg-primary text-primary-foreground py-2.5 rounded-xl font-bold text-xs hover:bg-primary-container transition-colors"
+              className="mt-3 w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs hover:bg-black"
             >
-              Back to My Dashboard
+              Done
             </button>
           </div>
         </div>

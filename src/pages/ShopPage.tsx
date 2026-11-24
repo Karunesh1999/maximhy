@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react'
-import { Search, Sparkles, Info, Check } from 'lucide-react'
+import { Search, Heart, Plus, Check, Sparkles, X } from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { useCart } from '../context/CartContext'
@@ -10,6 +10,7 @@ export const ShopPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<ProductCategory>('all')
   const [productTypeSelections, setProductTypeSelections] = useState<Record<string, 'pack' | 'case'>>({})
+  const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
 
   const categories: { key: ProductCategory; label: string }[] = [
@@ -18,6 +19,8 @@ export const ShopPage: React.FC = () => {
     { key: 'pads-liners', label: 'Pads & Liners' },
     { key: 'wipes', label: 'Wipes' },
     { key: 'beauty', label: 'Beauty' },
+    { key: 'maternity', label: 'Maternity' },
+    { key: 'underwear', label: 'Underwear' },
   ]
 
   const filteredProducts = useMemo(() => {
@@ -32,10 +35,19 @@ export const ShopPage: React.FC = () => {
     })
   }, [activeCategory, searchQuery])
 
-  const toggleProductType = (productId: string, type: 'pack' | 'case') => {
+  const toggleProductType = (productId: string, type: 'pack' | 'case', e: React.MouseEvent) => {
+    e.stopPropagation()
     setProductTypeSelections((prev) => ({
       ...prev,
       [productId]: type,
+    }))
+  }
+
+  const toggleWishlist = (productId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setWishlist((prev) => ({
+      ...prev,
+      [productId]: !prev[productId],
     }))
   }
 
@@ -46,60 +58,50 @@ export const ShopPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      {/* Search Bar matching reference */}
+    <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* Editorial Headline matching Image 1 */}
+      <div className="pt-1 px-1">
+        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
+          <Sparkles className="w-3 h-3 text-secondary" /> 100% Certified Organic Cotton
+        </div>
+        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
+          Pure care as<br />
+          <span className="font-serif italic text-primary">always for you</span>
+        </h1>
+      </div>
+
+      {/* Minimal Search Pill matching Image 1 */}
       <div className="relative">
-        <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search tampons, pads, wipes..."
-          className="w-full bg-surface-container-lowest border border-outline-variant/80 rounded-full pl-10 pr-4 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary placeholder:text-muted-foreground transition-all shadow-2xs"
+          placeholder="Search tampons, pads, wipes, beauty..."
+          className="w-full bg-white/90 border border-black/8 rounded-full pl-10 pr-9 py-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-neutral-900 focus:bg-white placeholder:text-neutral-400 transition-all shadow-2xs"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-1"
           >
-            Clear
+            <X className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
-      {/* Hero Banner matching Reference 1 */}
-      <div className="relative rounded-2xl overflow-hidden shadow-sm bg-linear-to-r from-stone-800 to-stone-700 text-white min-h-[130px] flex items-center p-4">
-        {/* Background Image / Overlay */}
-        <img
-          src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&auto=format&fit=crop&q=80"
-          alt="100% Organic Cotton Model"
-          className="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-overlay"
-        />
-        <div className="relative z-10 flex flex-col max-w-[70%]">
-          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-accent tracking-wide uppercase mb-1">
-            <Sparkles className="w-3 h-3" /> Certified Pure Care
-          </div>
-          <h1 className="font-headline font-bold text-lg sm:text-xl text-white leading-tight">
-            100% Organic Cotton
-          </h1>
-          <p className="text-xs text-white/90 mt-1 font-medium">
-            Chlorine-free · Pack or Case (-5%)
-          </p>
-        </div>
-      </div>
-
-      {/* Category Pills matching Reference 1 */}
-      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+      {/* Category Pills matching Image 1 */}
+      <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5 -mx-1 px-1">
         {categories.map((cat) => {
           const isActive = activeCategory === cat.key
           return (
             <button
               key={cat.key}
               onClick={() => setActiveCategory(cat.key)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+              className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all active:scale-95 ${
                 isActive
-                  ? 'bg-primary text-primary-foreground shadow-xs'
-                  : 'bg-surface-container text-foreground/80 hover:bg-surface-container-high border border-outline-variant/40'
+                  ? 'bg-neutral-900 text-white shadow-xs'
+                  : 'bg-white/80 text-neutral-600 hover:text-neutral-900 hover:bg-white border border-black/6 shadow-2xs'
               }`}
             >
               {cat.label}
@@ -108,110 +110,118 @@ export const ShopPage: React.FC = () => {
         })}
       </div>
 
-      {/* Results Header */}
-      <div className="flex items-center justify-between text-xs text-muted-foreground px-1">
-        <span>Showing {filteredProducts.length} items</span>
+      {/* Results Counter & Free Shipping Notification */}
+      <div className="flex items-center justify-between text-xs text-neutral-500 px-1">
+        <span>{filteredProducts.length} Products Available</span>
         <span className="flex items-center gap-1 text-[11px] text-secondary font-semibold">
-          <Check className="w-3.5 h-3.5" /> 100% TCF Chlorine Free
+          <Check className="w-3.5 h-3.5 text-secondary" /> HSA/FSA Eligible
         </span>
       </div>
 
-      {/* Product Grid - 2 Columns on Mobile matching Reference 1 */}
+      {/* Product Grid - 2 Columns on Mobile matching Image 1 */}
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-12 bg-surface-container-low rounded-xl p-6">
-          <p className="text-sm font-semibold text-foreground">No products match your search</p>
-          <p className="text-xs text-muted-foreground mt-1">Try another keyword or select All categories.</p>
+        <div className="text-center py-12 bg-white rounded-3xl p-6 border border-black/5 shadow-xs">
+          <p className="text-sm font-semibold text-neutral-800">No products found</p>
+          <p className="text-xs text-neutral-500 mt-1">Try another search keyword or switch categories.</p>
           <button
             onClick={() => {
               setSearchQuery('')
               setActiveCategory('all')
             }}
-            className="mt-3 text-xs text-primary font-bold hover:underline"
+            className="mt-4 text-xs bg-neutral-900 text-white px-5 py-2 rounded-full font-semibold hover:bg-black"
           >
             Reset Filters
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-3.5">
           {filteredProducts.map((product) => {
             const selectedType = productTypeSelections[product.id] || 'pack'
-            const activePrice =
-              selectedType === 'pack' ? product.packPrice : product.casePrice
+            const activePrice = selectedType === 'pack' ? product.packPrice : product.casePrice
+            const isWishlisted = !!wishlist[product.id]
 
             return (
               <div
                 key={product.id}
                 onClick={() => setSelectedProductForModal(product)}
-                className="group bg-surface-container-lowest border border-outline-variant/60 rounded-xl p-2.5 flex flex-col justify-between hover:shadow-md transition-all cursor-pointer relative"
+                className="group flex flex-col justify-between cursor-pointer select-none"
               >
-                {/* Image & Click target */}
-                <div>
-                  <div className="relative aspect-square w-full rounded-lg overflow-hidden bg-surface-container-low mb-2 border border-outline-variant/30">
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      loading="lazy"
+                {/* Pastel Box matching Image 1 */}
+                <div
+                  className={`relative aspect-square w-full ${
+                    product.pastelBg || 'bg-[#FDECEF]'
+                  } rounded-[28px] p-3 flex items-center justify-center overflow-hidden shadow-2xs transition-transform duration-200 group-hover:-translate-y-1`}
+                >
+                  {/* Wishlist Heart Button in circle matching Image 1 */}
+                  <button
+                    type="button"
+                    onClick={(e) => toggleWishlist(product.id, e)}
+                    className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-neutral-500 hover:text-rose-500 hover:bg-white shadow-2xs transition-all active:scale-90"
+                    aria-label="Save to wishlist"
+                  >
+                    <Heart
+                      className={`w-3.5 h-3.5 transition-colors ${
+                        isWishlisted ? 'fill-rose-500 text-rose-500' : ''
+                      }`}
                     />
-                    <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity bg-black/60 text-white rounded-full p-1">
-                      <Info className="w-3 h-3" />
-                    </div>
-                  </div>
+                  </button>
 
-                  {/* Title & Tagline */}
-                  <h3 className="font-headline font-bold text-xs text-foreground line-clamp-1 leading-snug">
-                    {product.name}
-                  </h3>
-                  <p className="text-[10px] text-muted-foreground font-medium line-clamp-1 mt-0.5">
-                    {product.packCount}
-                  </p>
+                  {/* Authentic Packaging Product Image */}
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
+                    loading="lazy"
+                  />
                 </div>
 
-                {/* Option Selector Toggle (Pack vs Case) */}
-                <div className="mt-2 flex flex-col gap-2">
-                  <div className="grid grid-cols-2 gap-1 bg-surface-container-low p-0.5 rounded-md border border-outline-variant/40">
+                {/* Information below pastel box matching Image 1 */}
+                <div className="mt-2.5 px-0.5 flex flex-col">
+                  <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 leading-snug line-clamp-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-[11px] text-neutral-500 line-clamp-1 mt-0.5">
+                    {selectedType === 'pack' ? product.packCount : product.caseCount}
+                  </p>
+
+                  {/* Pack vs Case 12 Selector Pills */}
+                  <div className="mt-2 grid grid-cols-2 gap-1 bg-neutral-100 p-0.5 rounded-full border border-black/5">
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleProductType(product.id, 'pack')
-                      }}
-                      className={`text-[10px] py-0.5 px-1 rounded font-medium transition-colors ${
+                      onClick={(e) => toggleProductType(product.id, 'pack', e)}
+                      className={`text-[9px] py-0.5 px-1.5 rounded-full font-semibold transition-all ${
                         selectedType === 'pack'
-                          ? 'bg-accent/80 text-accent-foreground font-bold shadow-2xs'
-                          : 'text-muted-foreground hover:text-foreground'
+                          ? 'bg-white text-neutral-900 shadow-2xs'
+                          : 'text-neutral-500 hover:text-neutral-800'
                       }`}
                     >
                       Pack
                     </button>
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        toggleProductType(product.id, 'case')
-                      }}
-                      className={`text-[10px] py-0.5 px-1 rounded font-medium transition-colors ${
+                      onClick={(e) => toggleProductType(product.id, 'case', e)}
+                      className={`text-[9px] py-0.5 px-1.5 rounded-full font-semibold transition-all ${
                         selectedType === 'case'
-                          ? 'bg-accent/80 text-accent-foreground font-bold shadow-2xs'
-                          : 'text-muted-foreground hover:text-foreground'
+                          ? 'bg-white text-neutral-900 shadow-2xs'
+                          : 'text-neutral-500 hover:text-neutral-800'
                       }`}
                     >
                       Case -5%
                     </button>
                   </div>
 
-                  {/* Price & Add Button Row */}
-                  <div className="flex items-center justify-between pt-1 border-t border-outline-variant/40">
-                    <span className="font-headline font-bold text-xs text-foreground">
+                  {/* Price & Fast Add Action */}
+                  <div className="flex items-center justify-between mt-2 pt-1">
+                    <span className="text-sm font-bold text-neutral-900">
                       ${activePrice.toFixed(2)}
                     </span>
                     <button
                       type="button"
                       onClick={(e) => handleAddProduct(product, e)}
-                      className="bg-primary text-primary-foreground text-[11px] font-bold px-3 py-1 rounded-md hover:bg-primary-container active:scale-95 transition-all shadow-xs"
+                      className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:bg-black shadow-xs transition-all active:scale-90"
                       aria-label={`Add ${product.name} to cart`}
                     >
-                      Add
+                      <Plus className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
@@ -221,7 +231,7 @@ export const ShopPage: React.FC = () => {
         </div>
       )}
 
-      {/* Interactive Product Details Modal */}
+      {/* Interactive Product Details Modal matching Image 1 */}
       <ProductDetailModal
         product={selectedProductForModal}
         onClose={() => setSelectedProductForModal(null)}

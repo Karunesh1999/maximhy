@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Check, ChevronDown, ChevronUp, PackageCheck, Sparkles } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, PackageCheck, Sparkles, Plus } from 'lucide-react'
 import { BUNDLES } from '../data/bundles'
 import type { BundleItem } from '../types'
 import { useCart } from '../context/CartContext'
@@ -17,59 +17,62 @@ export const BundlesPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      {/* Page Title & Subtitle matching Reference 2 */}
-      <div className="pt-2">
-        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
-          Bundles &amp; Combos
+    <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* Page Title & Subtitle matching Image 1 */}
+      <div className="pt-1 px-1">
+        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
+          <Sparkles className="w-3 h-3 text-secondary" /> Curated Period Care
+        </div>
+        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
+          Bundles &amp;<br />
+          <span className="font-serif italic text-primary">Value Combos</span>
         </h1>
-        <p className="text-xs text-muted-foreground mt-0.5 font-medium">
-          Curated multi-packs with instant savings.
+        <p className="text-xs text-neutral-500 mt-1 font-medium">
+          Multi-packs with automatic bundle discounts.
         </p>
       </div>
 
-      {/* List of Bundles matching Reference 2 */}
-      <div className="flex flex-col gap-3">
+      {/* List of Bundles */}
+      <div className="flex flex-col gap-3.5">
         {BUNDLES.map((bundle) => {
           const isExpanded = expandedBundleId === bundle.id
 
           return (
             <div
               key={bundle.id}
-              className="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-3.5 shadow-xs hover:border-primary/50 transition-all flex flex-col gap-3"
+              className="bg-white border border-black/6 rounded-3xl p-4 shadow-2xs hover:shadow-xs transition-all flex flex-col gap-3"
             >
-              <div className="flex items-start gap-3">
-                {/* Bundle Thumbnail */}
-                <div className="w-20 h-20 rounded-xl overflow-hidden bg-surface-container-low shrink-0 border border-outline-variant/40">
+              <div className="flex items-start gap-3.5">
+                {/* Bundle Thumbnail in rounded pastel box */}
+                <div className="w-20 h-20 rounded-2xl bg-[#FDECEF] p-1 shrink-0 flex items-center justify-center overflow-hidden">
                   <img
                     src={bundle.image}
                     alt={bundle.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                     loading="lazy"
                   />
                 </div>
 
                 {/* Bundle Details */}
                 <div className="flex-1 min-w-0">
-                  {/* Green Savings Pill matching Reference 2 */}
-                  <div className="inline-block bg-secondary-container text-on-secondary-container text-[11px] font-bold px-2 py-0.5 rounded-md mb-1">
+                  <div className="inline-block bg-secondary/10 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full mb-1">
                     {bundle.savingsBadge}
                   </div>
 
-                  <h3 className="font-headline font-bold text-sm text-foreground truncate">
+                  <h3 className="text-sm font-semibold text-neutral-900 truncate">
                     {bundle.title}
                   </h3>
-                  <p className="text-[11px] text-muted-foreground font-medium line-clamp-1 mt-0.5">
+                  <p className="text-[11px] text-neutral-500 font-medium line-clamp-1 mt-0.5">
                     {bundle.subtitle}
                   </p>
 
-                  {/* Price & Add Button Row matching Reference 2 */}
-                  <div className="flex items-center justify-between mt-2">
+                  {/* Price & Add Button Row */}
+                  <div className="flex items-center justify-between mt-2 pt-1">
                     <div className="flex items-baseline gap-1.5">
-                      <span className="font-headline font-bold text-sm text-foreground">
+                      <span className="text-sm font-bold text-neutral-900">
                         ${bundle.price.toFixed(2)}
                       </span>
-                      <span className="text-xs text-muted-foreground line-through">
+                      <span className="text-xs text-neutral-400 line-through">
                         ${bundle.originalPrice.toFixed(2)}
                       </span>
                     </div>
@@ -77,24 +80,25 @@ export const BundlesPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => handleAddBundle(bundle)}
-                      className="bg-primary text-primary-foreground text-xs font-bold px-4 py-1.5 rounded-lg hover:bg-primary-container active:scale-95 transition-all shadow-xs"
+                      className="bg-neutral-900 text-white text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-black active:scale-95 transition-all shadow-xs flex items-center gap-1"
                     >
-                      Add
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add</span>
                     </button>
                   </div>
                 </div>
               </div>
 
               {/* Items in this bundle toggle */}
-              <div className="border-t border-outline-variant/40 pt-2">
+              <div className="border-t border-black/5 pt-2">
                 <button
                   type="button"
                   onClick={() => toggleExpand(bundle.id)}
-                  className="w-full flex items-center justify-between text-[11px] font-semibold text-muted-foreground hover:text-foreground"
+                  className="w-full flex items-center justify-between text-[11px] font-semibold text-neutral-500 hover:text-neutral-800"
                 >
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1.5">
                     <PackageCheck className="w-3.5 h-3.5 text-secondary" />
-                    <span>What's inside ({bundle.itemsIncluded.length} items)</span>
+                    <span>Included in box ({bundle.itemsIncluded.length} items)</span>
                   </span>
                   {isExpanded ? (
                     <ChevronUp className="w-3.5 h-3.5" />
@@ -104,30 +108,25 @@ export const BundlesPage: React.FC = () => {
                 </button>
 
                 {isExpanded && (
-                  <div className="mt-2 text-xs bg-surface-container-low p-2.5 rounded-lg border border-outline-variant/40 animate-in fade-in duration-150">
-                    <p className="text-muted-foreground text-[11px] mb-2 leading-relaxed">
+                  <div className="mt-2 pl-5 flex flex-col gap-1 text-[11px] text-neutral-600 bg-neutral-50 p-2.5 rounded-2xl animate-in fade-in duration-200">
+                    <p className="font-semibold text-neutral-800 text-[10px] uppercase tracking-wider mb-0.5">
+                      Items Breakdown:
+                    </p>
+                    {bundle.itemsIncluded.map((item, i) => (
+                      <div key={i} className="flex items-center gap-1.5">
+                        <Check className="w-3 h-3 text-secondary shrink-0" />
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                    <p className="mt-1 text-[10px] text-neutral-500 italic">
                       {bundle.description}
                     </p>
-                    <ul className="space-y-1">
-                      {bundle.itemsIncluded.map((item, idx) => (
-                        <li key={idx} className="flex items-center gap-1.5 text-[11px] text-foreground">
-                          <Check className="w-3.5 h-3.5 text-secondary shrink-0" />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 )}
               </div>
             </div>
           )
         })}
-      </div>
-
-      {/* Free Shipping Tip */}
-      <div className="bg-surface-variant/40 p-3.5 rounded-xl border border-outline-variant/60 flex items-center gap-2.5 text-xs text-primary font-medium">
-        <Sparkles className="w-4 h-4 shrink-0" />
-        <span>Bundles count towards the $39.99 Free Shipping threshold!</span>
       </div>
     </div>
   )

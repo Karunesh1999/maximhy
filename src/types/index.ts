@@ -1,15 +1,17 @@
-export type ProductCategory = 'all' | 'tampons' | 'pads-liners' | 'wipes' | 'beauty'
+export type ProductCategory = 'all' | 'tampons' | 'pads-liners' | 'wipes' | 'beauty' | 'maternity' | 'underwear'
 
 export interface Product {
   id: string
   name: string
-  category: 'tampons' | 'pads-liners' | 'wipes' | 'beauty'
+  category: 'tampons' | 'pads-liners' | 'wipes' | 'beauty' | 'maternity' | 'underwear'
   tagline: string
+  subtitle?: string
   packCount: string
   packPrice: number
   caseCount: string
   casePrice: number
   image: string
+  pastelBg?: string
   rating: number
   reviewsCount: number
   description: string
@@ -19,6 +21,7 @@ export interface Product {
   absorbency?: string
   inStock: boolean
   isBestseller?: boolean
+  hsaFsaEligible?: boolean
 }
 
 export interface BundleItem {

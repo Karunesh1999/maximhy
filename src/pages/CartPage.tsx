@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShoppingBag, ArrowRight, CheckCircle2, ShieldCheck, Truck, Sparkles, X, ChevronRight, Trash2 } from 'lucide-react'
+import { ArrowLeft, ShoppingBag, CheckCircle2, ShieldCheck, Sparkles, X, ChevronRight } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 
 export const CartPage: React.FC = () => {
@@ -60,49 +60,58 @@ export const CartPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4">
-      {/* Title matching Reference 4 */}
-      <div className="pt-2">
-        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
-          Your Order
+    <div className="flex flex-col gap-4 p-4 pb-28">
+      {/* Top Header matching Image 1 (Screen 3) */}
+      <div className="flex items-center justify-between pt-1">
+        <button
+          onClick={() => navigate(-1)}
+          className="w-10 h-10 rounded-full bg-white shadow-xs border border-black/5 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
+          aria-label="Back"
+        >
+          <ArrowLeft className="w-5 h-5" />
+        </button>
+
+        <h1 className="text-base font-semibold text-neutral-900 tracking-tight">
+          Shopping cart
         </h1>
+
+        <div className="w-10" /> {/* Spacer for optical center balance */}
       </div>
 
       {items.length === 0 ? (
-        <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/60 text-center flex flex-col items-center gap-3">
-          <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-muted-foreground">
-            <ShoppingBag className="w-8 h-8" />
+        <div className="bg-white rounded-3xl p-8 border border-black/5 text-center flex flex-col items-center gap-3 my-6 shadow-xs">
+          <div className="w-16 h-16 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400">
+            <ShoppingBag className="w-7 h-7" />
           </div>
-          <h2 className="font-headline font-bold text-lg text-foreground">
-            Your shopping bag is empty
+          <h2 className="text-lg font-bold text-neutral-900">
+            Your shopping cart is empty
           </h2>
-          <p className="text-xs text-muted-foreground max-w-xs">
-            Explore our 100% organic cotton tampons, pads, and wipes to start your clean cycle journey.
+          <p className="text-xs text-neutral-500 max-w-xs">
+            Discover our 100% organic cotton tampons, pads, and wipes for clean, chlorine-free period care.
           </p>
           <Link
             to="/shop"
-            className="mt-2 bg-primary text-primary-foreground text-xs font-bold px-6 py-2.5 rounded-xl hover:bg-primary-container transition-all"
+            className="mt-3 bg-neutral-900 text-white text-xs font-semibold px-6 py-3 rounded-full hover:bg-black transition-all shadow-xs"
           >
             Start Shopping
           </Link>
         </div>
       ) : (
         <>
-          {/* Free Shipping Progress Box matching Reference 4 */}
-          <div className="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-3.5 shadow-xs flex flex-col gap-2">
-            <div className="flex items-center justify-between text-xs font-bold text-foreground">
+          {/* Free Shipping Progress Box matching $39.99 live policy */}
+          <div className="bg-white border border-black/6 rounded-2xl p-3.5 shadow-2xs flex flex-col gap-2">
+            <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
               {isFreeShipping ? (
-                <span className="text-secondary flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4" /> You've unlocked Free Shipping!
+                <span className="text-secondary flex items-center gap-1.5 font-bold">
+                  <Sparkles className="w-4 h-4 text-secondary" /> You unlocked Free Shipping!
                 </span>
               ) : (
-                <span>Add ${amountToFreeShipping.toFixed(2)} for Free Shipping</span>
+                <span>Add ${amountToFreeShipping.toFixed(2)} more for Free Shipping</span>
               )}
-              <span className="text-xs text-muted-foreground">{freeShippingProgress}%</span>
+              <span className="text-xs text-neutral-400 font-medium">{freeShippingProgress}%</span>
             </div>
 
-            {/* Green progress bar matching Reference 4 */}
-            <div className="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+            <div className="w-full h-1.5 bg-neutral-100 rounded-full overflow-hidden">
               <div
                 className="h-full bg-secondary transition-all duration-300 rounded-full"
                 style={{ width: `${freeShippingProgress}%` }}
@@ -110,105 +119,94 @@ export const CartPage: React.FC = () => {
             </div>
           </div>
 
-          {/* List of Cart Items matching Reference 4 */}
-          <div className="flex flex-col gap-2.5">
+          {/* Cart Items List matching Image 1 (Screen 3) */}
+          <div className="flex flex-col divide-y divide-black/5 bg-white rounded-3xl p-4 border border-black/6 shadow-2xs">
             {items.map((item) => (
               <div
                 key={item.cartId}
-                className="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-3 shadow-xs flex items-center justify-between gap-3"
+                className="py-3.5 first:pt-1 last:pb-1 flex items-center justify-between gap-3.5"
               >
-                {/* Product thumbnail */}
-                <div className="w-14 h-14 rounded-lg overflow-hidden bg-surface-container-low shrink-0 border border-outline-variant/40">
+                {/* Rounded pastel square thumbnail matching Image 1 */}
+                <div className="w-16 h-16 rounded-[22px] bg-[#FDECEF] p-1.5 shrink-0 flex items-center justify-center overflow-hidden">
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
 
-                {/* Details */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between">
-                    <h4 className="font-headline font-bold text-xs text-foreground truncate">
-                      {item.name}
-                    </h4>
-                    <button
-                      onClick={() => removeItem(item.cartId)}
-                      className="text-muted-foreground/60 hover:text-destructive p-1"
-                      aria-label="Remove item"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    {item.unitInfo} -{' '}
-                    <span className="font-bold text-foreground">${item.price.toFixed(2)}</span>
-                  </p>
+                {/* Center Item Info matching Image 1: Title, Subtitle, 1 X $17.99 */}
+                <div className="flex-1 min-w-0 flex flex-col">
+                  <h4 className="text-xs sm:text-sm font-semibold text-neutral-900 truncate">
+                    {item.name}
+                  </h4>
+                  <span className="text-[11px] text-neutral-500 truncate mt-0.5">
+                    {item.unitInfo}
+                  </span>
+                  <span className="text-xs font-semibold text-neutral-800 mt-1">
+                    {item.quantity} X ${item.price.toFixed(2)}
+                  </span>
                 </div>
 
-                {/* Quantity Controls matching Reference 4: - [number] + (with primary colored button) */}
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => updateQuantity(item.cartId, item.quantity - 1)}
-                    className="w-7 h-7 rounded-full bg-surface-container hover:bg-surface-container-high text-foreground font-bold flex items-center justify-center text-xs transition-colors"
-                    aria-label="Decrease quantity"
-                  >
-                    -
-                  </button>
-                  <span className="text-xs font-bold w-4 text-center">{item.quantity}</span>
+                {/* Vertical Stepper Pill matching Image 1 (Screen 3) */}
+                <div className="flex flex-col items-center justify-between bg-neutral-100 rounded-full w-7 h-16 py-1 text-neutral-700 shrink-0 shadow-2xs">
                   <button
                     type="button"
                     onClick={() => updateQuantity(item.cartId, item.quantity + 1)}
-                    className="w-7 h-7 rounded-full bg-primary hover:bg-primary-container text-primary-foreground font-bold flex items-center justify-center text-xs transition-colors shadow-2xs"
+                    className="w-5 h-5 flex items-center justify-center text-neutral-800 hover:text-black font-bold text-xs active:scale-90"
                     aria-label="Increase quantity"
                   >
                     +
+                  </button>
+                  <span className="text-[11px] font-bold text-neutral-900">
+                    {item.quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (item.quantity === 1) {
+                        removeItem(item.cartId)
+                      } else {
+                        updateQuantity(item.cartId, item.quantity - 1)
+                      }
+                    }}
+                    className="w-5 h-5 flex items-center justify-center text-neutral-600 hover:text-neutral-900 font-bold text-xs active:scale-90"
+                    aria-label="Decrease quantity"
+                  >
+                    -
                   </button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Order Summary Box matching Reference 4 */}
-          <div className="bg-surface-container-lowest border border-outline-variant/70 rounded-2xl p-4 shadow-xs flex flex-col gap-2.5 mt-1">
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
-              <span>Subtotal</span>
-              <span className="font-bold text-foreground">${subtotal.toFixed(2)}</span>
-            </div>
-
-            <div className="flex items-center justify-between text-xs text-muted-foreground">
+          {/* Clean Order Summary matching Image 1 */}
+          <div className="flex flex-col gap-2 px-1 pt-1">
+            <div className="flex items-center justify-between text-xs text-neutral-500">
               <span>Shipping</span>
-              <span className={`font-bold ${isFreeShipping ? 'text-secondary' : 'text-foreground'}`}>
-                {isFreeShipping ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+              <span className={`font-semibold ${isFreeShipping ? 'text-secondary' : 'text-neutral-800'}`}>
+                {isFreeShipping ? 'Free' : `$${shippingCost.toFixed(2)}`}
               </span>
             </div>
 
-            <div className="border-t border-outline-variant/60 my-1 pt-2 flex items-center justify-between">
-              <span className="font-headline font-bold text-sm text-foreground">Total</span>
-              <span className="font-headline font-bold text-base text-primary">
-                ${total.toFixed(2)}
-              </span>
+            <div className="flex items-center justify-between text-sm font-bold text-neutral-900 pt-1">
+              <span>Subtotal</span>
+              <span className="text-base">${total.toFixed(2)}</span>
             </div>
 
-            {/* Place Order CTA matching Reference 4 */}
+            <div className="flex items-center gap-1.5 text-[11px] text-secondary font-semibold pt-1">
+              <ShieldCheck className="w-3.5 h-3.5 text-secondary" />
+              <span>HSA/FSA Card Eligible at Checkout</span>
+            </div>
+
+            {/* Bold Full-Width Black Pill CTA matching Image 1 (Screen 3) */}
             <button
               type="button"
               onClick={handleStartCheckout}
-              className="w-full bg-primary text-primary-foreground py-3.5 px-4 rounded-xl font-bold text-sm shadow-md hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1"
+              className="w-full bg-neutral-900 text-white rounded-full py-4 px-6 text-sm font-semibold shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
             >
-              <span>Place Order</span>
-              <ArrowRight className="w-4 h-4" />
+              <span>Proceed to checkout</span>
             </button>
-
-            <div className="flex items-center justify-center gap-4 text-[10px] text-muted-foreground mt-1">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-secondary" /> 256-bit Secure
-              </span>
-              <span className="flex items-center gap-1">
-                <Truck className="w-3.5 h-3.5 text-secondary" /> Fast Carbon-Neutral Ship
-              </span>
-            </div>
           </div>
         </>
       )}
@@ -216,14 +214,14 @@ export const CartPage: React.FC = () => {
       {/* Simulated Interactive Checkout Modal */}
       {isCheckoutOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-          <div className="bg-surface-container-lowest w-full max-w-md max-h-[92vh] rounded-t-2xl sm:rounded-2xl overflow-y-auto no-scrollbar shadow-2xl p-5 flex flex-col gap-4">
+          <div className="bg-white w-full max-w-md max-h-[92vh] rounded-t-[36px] sm:rounded-[36px] overflow-y-auto no-scrollbar shadow-2xl p-5 flex flex-col gap-4">
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-outline-variant pb-3">
+            <div className="flex items-center justify-between border-b border-black/5 pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs font-bold flex items-center justify-center">
+                <div className="w-6 h-6 rounded-full bg-neutral-900 text-white text-xs font-bold flex items-center justify-center">
                   {checkoutStep === 'shipping' ? '1' : checkoutStep === 'payment' ? '2' : '✓'}
                 </div>
-                <h3 className="font-headline font-bold text-base text-foreground">
+                <h3 className="font-bold text-base text-neutral-900">
                   {checkoutStep === 'shipping'
                     ? 'Shipping Address'
                     : checkoutStep === 'payment'
@@ -233,7 +231,7 @@ export const CartPage: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsCheckoutOpen(false)}
-                className="text-muted-foreground hover:text-foreground p-1"
+                className="text-neutral-400 hover:text-neutral-800 p-1 rounded-full"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -243,87 +241,87 @@ export const CartPage: React.FC = () => {
             {checkoutStep === 'shipping' && (
               <form onSubmit={handleProceedToPayment} className="flex flex-col gap-3">
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-foreground">Full Name</label>
+                  <label className="text-[11px] font-semibold text-neutral-700">Full Name</label>
                   <input
                     type="text"
                     name="name"
                     required
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-primary"
+                    className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-neutral-900"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-foreground">Email Address</label>
+                  <label className="text-[11px] font-semibold text-neutral-700">Email Address</label>
                   <input
                     type="email"
                     name="email"
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-primary"
+                    className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-neutral-900"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-foreground">Street Address</label>
+                  <label className="text-[11px] font-semibold text-neutral-700">Street Address</label>
                   <input
                     type="text"
                     name="address"
                     required
                     value={formData.address}
                     onChange={handleInputChange}
-                    className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-primary"
+                    className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3.5 py-2.5 text-xs text-neutral-900 focus:bg-white focus:outline-none focus:ring-1 focus:ring-neutral-900"
                   />
                 </div>
 
                 <div className="grid grid-cols-3 gap-2">
                   <div className="space-y-1 col-span-1">
-                    <label className="text-[11px] font-bold text-foreground">City</label>
+                    <label className="text-[11px] font-semibold text-neutral-700">City</label>
                     <input
                       type="text"
                       name="city"
                       required
                       value={formData.city}
                       onChange={handleInputChange}
-                      className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs"
+                      className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3 py-2 text-xs text-neutral-900"
                     />
                   </div>
                   <div className="space-y-1 col-span-1">
-                    <label className="text-[11px] font-bold text-foreground">State</label>
+                    <label className="text-[11px] font-semibold text-neutral-700">State</label>
                     <input
                       type="text"
                       name="state"
                       required
                       value={formData.state}
                       onChange={handleInputChange}
-                      className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs"
+                      className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3 py-2 text-xs text-neutral-900"
                     />
                   </div>
                   <div className="space-y-1 col-span-1">
-                    <label className="text-[11px] font-bold text-foreground">ZIP</label>
+                    <label className="text-[11px] font-semibold text-neutral-700">ZIP</label>
                     <input
                       type="text"
                       name="zip"
                       required
                       value={formData.zip}
                       onChange={handleInputChange}
-                      className="w-full bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-xs"
+                      className="w-full bg-neutral-50 border border-black/8 rounded-xl px-3 py-2 text-xs text-neutral-900"
                     />
                   </div>
                 </div>
 
-                <div className="bg-surface-variant/30 p-2.5 rounded-lg border border-outline-variant/60 flex items-center justify-between text-xs text-foreground mt-1">
-                  <span className="font-medium">Shipping Option:</span>
+                <div className="bg-neutral-50 p-3 rounded-2xl border border-black/6 flex items-center justify-between text-xs mt-1">
+                  <span className="font-medium text-neutral-600">Shipping:</span>
                   <span className="font-bold text-secondary">
-                    {isFreeShipping ? 'Standard Free (2-4 business days)' : 'Standard $5.99'}
+                    {isFreeShipping ? 'Standard Free (2-4 Days)' : 'Standard $4.99'}
                   </span>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-xs mt-2 hover:bg-primary-container transition-colors flex items-center justify-center gap-1.5"
+                  className="w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs mt-2 hover:bg-black transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-98"
                 >
                   <span>Continue to Payment</span>
                   <ChevronRight className="w-4 h-4" />
@@ -334,26 +332,26 @@ export const CartPage: React.FC = () => {
             {/* Step 2: Payment & Review */}
             {checkoutStep === 'payment' && (
               <div className="flex flex-col gap-3">
-                <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/60 text-xs space-y-1">
-                  <div className="flex justify-between text-muted-foreground">
+                <div className="bg-neutral-50 p-3 rounded-2xl border border-black/6 text-xs space-y-1">
+                  <div className="flex justify-between text-neutral-500">
                     <span>Shipping to:</span>
-                    <span className="font-bold text-foreground">{formData.name}</span>
+                    <span className="font-semibold text-neutral-900">{formData.name}</span>
                   </div>
-                  <div className="text-muted-foreground truncate">{formData.address}, {formData.city}, {formData.state} {formData.zip}</div>
+                  <div className="text-neutral-500 truncate">{formData.address}, {formData.city}, {formData.state} {formData.zip}</div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-foreground">Select Payment Method (Demo)</label>
+                  <label className="text-[11px] font-semibold text-neutral-700">Select Payment Method</label>
                   <div className="grid grid-cols-3 gap-2">
-                    {['Credit Card', 'Apple Pay', 'PayPal'].map((method) => (
+                    {['Credit Card', 'Apple Pay', 'HSA / FSA'].map((method) => (
                       <button
                         key={method}
                         type="button"
                         onClick={() => setFormData({ ...formData, paymentMethod: method })}
-                        className={`py-2 px-2 rounded-lg text-xs font-semibold border transition-all ${
+                        className={`py-2 px-1 rounded-xl text-xs font-semibold border transition-all text-center ${
                           formData.paymentMethod === method
-                            ? 'bg-accent/80 border-primary text-primary ring-1 ring-primary'
-                            : 'bg-surface-container-low border-outline-variant text-muted-foreground'
+                            ? 'bg-neutral-900 text-white border-neutral-900 shadow-2xs'
+                            : 'bg-neutral-50 border-black/6 text-neutral-600 hover:bg-white'
                         }`}
                       >
                         {method}
@@ -363,35 +361,35 @@ export const CartPage: React.FC = () => {
                 </div>
 
                 {/* Summary */}
-                <div className="bg-surface-container-low p-3 rounded-xl border border-outline-variant/60 text-xs space-y-1.5">
+                <div className="bg-neutral-50 p-3 rounded-2xl border border-black/6 text-xs space-y-1.5">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Items ({items.length}):</span>
-                    <span className="font-bold text-foreground">${subtotal.toFixed(2)}</span>
+                    <span className="text-neutral-500">Items ({items.length}):</span>
+                    <span className="font-semibold text-neutral-900">${subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Shipping:</span>
-                    <span className="font-bold text-secondary">
+                    <span className="text-neutral-500">Shipping:</span>
+                    <span className="font-semibold text-secondary">
                       {isFreeShipping ? 'FREE' : `$${shippingCost.toFixed(2)}`}
                     </span>
                   </div>
-                  <div className="flex justify-between pt-1 border-t border-outline-variant/60 font-bold text-sm">
+                  <div className="flex justify-between pt-1 border-t border-black/5 font-bold text-sm">
                     <span>Grand Total:</span>
-                    <span className="text-primary">${total.toFixed(2)}</span>
+                    <span className="text-neutral-900">${total.toFixed(2)}</span>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 pt-1">
                   <button
                     type="button"
                     onClick={() => setCheckoutStep('shipping')}
-                    className="w-1/3 py-2.5 rounded-xl border border-outline-variant text-xs font-semibold hover:bg-muted"
+                    className="w-1/3 py-3 rounded-full border border-black/10 text-xs font-semibold text-neutral-700 hover:bg-neutral-50"
                   >
                     Back
                   </button>
                   <button
                     type="button"
                     onClick={handleCompleteOrder}
-                    className="w-2/3 bg-primary text-primary-foreground py-2.5 rounded-xl font-bold text-xs hover:bg-primary-container transition-colors shadow-xs"
+                    className="w-2/3 bg-neutral-900 text-white py-3 rounded-full font-semibold text-xs hover:bg-black transition-all shadow-sm active:scale-98"
                   >
                     Complete Order (${total.toFixed(2)})
                   </button>
@@ -402,35 +400,35 @@ export const CartPage: React.FC = () => {
             {/* Step 3: Success Confirmation */}
             {checkoutStep === 'success' && (
               <div className="text-center py-4 flex flex-col items-center gap-3">
-                <div className="w-14 h-14 rounded-full bg-secondary-container text-secondary flex items-center justify-center animate-bounce">
+                <div className="w-14 h-14 rounded-full bg-secondary/15 text-secondary flex items-center justify-center animate-bounce">
                   <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                 </div>
-                <h3 className="font-headline font-bold text-xl text-foreground">
+                <h3 className="font-bold text-xl text-neutral-900">
                   Thank You for Your Order!
                 </h3>
-                <p className="text-xs text-muted-foreground max-w-xs">
-                  Your clean, chlorine-free period care is being prepared at our certified eco-facility.
+                <p className="text-xs text-neutral-500 max-w-xs">
+                  Your 100% organic, chlorine-free period care order has been placed successfully.
                 </p>
 
-                <div className="w-full bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/60 text-xs text-left space-y-1.5">
+                <div className="w-full bg-neutral-50 p-3.5 rounded-2xl border border-black/6 text-xs text-left space-y-1.5">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Order Number:</span>
-                    <span className="font-mono font-bold text-foreground">{orderNumber}</span>
+                    <span className="text-neutral-500">Order Number:</span>
+                    <span className="font-mono font-bold text-neutral-900">{orderNumber}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Confirmation sent to:</span>
-                    <span className="font-bold text-foreground truncate">{formData.email}</span>
+                    <span className="text-neutral-500">Confirmation sent to:</span>
+                    <span className="font-semibold text-neutral-900 truncate">{formData.email}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Estimated Delivery:</span>
-                    <span className="font-bold text-secondary">In 2 - 3 Days</span>
+                    <span className="text-neutral-500">Estimated Delivery:</span>
+                    <span className="font-bold text-secondary">2 - 3 Business Days</span>
                   </div>
                 </div>
 
                 <button
                   type="button"
                   onClick={handleFinish}
-                  className="w-full bg-primary text-primary-foreground py-3 rounded-xl font-bold text-xs hover:bg-primary-container transition-colors mt-2"
+                  className="w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs hover:bg-black transition-all mt-2 shadow-sm"
                 >
                   Continue Shopping
                 </button>

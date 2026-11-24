@@ -3,11 +3,11 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { Layout } from './components/Layout'
 import { DesktopDeviceFrame } from './components/DesktopDeviceFrame'
+import { HomePage } from './pages/HomePage'
 import { ShopPage } from './pages/ShopPage'
 import { BundlesPage } from './pages/BundlesPage'
 import { SubscribePage } from './pages/SubscribePage'
 import { CartPage } from './pages/CartPage'
-import { AboutPage } from './pages/AboutPage'
 import { EducationPage } from './pages/EducationPage'
 import { FaqContactPage } from './pages/FaqContactPage'
 
@@ -18,12 +18,12 @@ export const App: React.FC = () => {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<ShopPage />} />
+              <Route index element={<HomePage />} />
               <Route path="shop" element={<ShopPage />} />
               <Route path="bundles" element={<BundlesPage />} />
               <Route path="subscribe" element={<SubscribePage />} />
               <Route path="cart" element={<CartPage />} />
-              <Route path="about" element={<AboutPage />} />
+              <Route path="about" element={<Navigate to="/#about" replace />} />
               <Route path="education" element={<EducationPage />} />
               <Route path="faq" element={<FaqContactPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />

@@ -126,10 +126,15 @@
 }
 
 /* Hide scrollbars globally (Native Mobile App Behavior) */
-html, body, *, *::before, *::after {
+html,
+body,
+*,
+*::before,
+*::after {
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
 }
+
 html::-webkit-scrollbar,
 body::-webkit-scrollbar,
 *::-webkit-scrollbar {
@@ -142,6 +147,7 @@ body::-webkit-scrollbar,
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
