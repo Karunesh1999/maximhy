@@ -116,7 +116,7 @@ export const ShopPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-4 pb-28">
+    <div className="flex flex-col gap-5 px-3 sm:px-4 py-4 pb-28">
       {/* Search Bar with Filter Icon matching design */}
       <div className="relative flex items-center gap-2">
         <div className="relative flex-1">
@@ -253,7 +253,7 @@ export const ShopPage: React.FC = () => {
         </span>
       </div>
 
-      {/* Product Grid - 2 Columns on Mobile matching Image 1 */}
+      {/* Product Grid - 3 Columns on Mobile as requested */}
       {filteredProducts.length === 0 ? (
         <div className="text-center py-12 bg-white rounded-3xl p-6 border border-black/5 shadow-xs">
           <p className="text-sm font-semibold text-neutral-800">No products found</p>
@@ -269,7 +269,7 @@ export const ShopPage: React.FC = () => {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3.5">
+        <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
           {filteredProducts.map((product) => {
             const selectedType = productTypeSelections[product.id] || 'pack'
             const activePrice = selectedType === 'pack' ? product.packPrice : product.casePrice
@@ -285,17 +285,17 @@ export const ShopPage: React.FC = () => {
                 <div
                   className={`relative aspect-square w-full ${
                     product.pastelBg || 'bg-[#FDECEF]'
-                  } rounded-[28px] p-3 flex items-center justify-center overflow-hidden shadow-2xs transition-transform duration-200 group-hover:-translate-y-1`}
+                  } rounded-2xl p-2 flex items-center justify-center overflow-hidden shadow-2xs transition-transform duration-200 group-hover:-translate-y-0.5`}
                 >
-                  {/* Wishlist Heart Button in circle matching Image 1 */}
+                  {/* Wishlist Heart Button in circle */}
                   <button
                     type="button"
                     onClick={(e) => toggleWishlist(product.id, e)}
-                    className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/80 backdrop-blur-md flex items-center justify-center text-neutral-500 hover:text-rose-500 hover:bg-white shadow-2xs transition-all active:scale-90"
+                    className="absolute top-1.5 right-1.5 z-10 w-5.5 h-5.5 rounded-full bg-white/85 backdrop-blur-xs flex items-center justify-center text-neutral-500 hover:text-rose-500 hover:bg-white shadow-2xs transition-all active:scale-90"
                     aria-label="Save to wishlist"
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 transition-colors ${
+                      className={`w-3 h-3 transition-colors ${
                         isWishlisted ? 'fill-rose-500 text-rose-500' : ''
                       }`}
                     />
@@ -305,28 +305,31 @@ export const ShopPage: React.FC = () => {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300 drop-shadow-sm"
+                    className="w-full h-full object-contain p-0.5 group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                     loading="lazy"
                   />
                 </div>
 
-                {/* Information below pastel box matching Image 1 */}
-                <div className="mt-2.5 px-0.5 flex flex-col">
-                  <h3 className="text-xs sm:text-sm font-semibold text-neutral-900 leading-snug line-clamp-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-[11px] text-neutral-500 line-clamp-1 mt-0.5">
-                    {selectedType === 'pack' ? product.packCount : product.caseCount}
-                  </p>
+                {/* Information below pastel box */}
+                <div className="mt-1.5 px-0.5 flex flex-col flex-1 justify-between">
+                  <div>
+                    {/* Title with min-h for consistent 2-line alignment */}
+                    <h3 className="text-[11px] font-semibold text-neutral-900 leading-tight line-clamp-2 min-h-[26px]">
+                      {product.name}
+                    </h3>
+                    <p className="text-[9.5px] text-neutral-500 line-clamp-1 mt-0.5">
+                      {selectedType === 'pack' ? product.packCount : product.caseCount}
+                    </p>
+                  </div>
 
-                  {/* Pack vs Case 12 Selector Pills */}
-                  <div className="mt-2 grid grid-cols-2 gap-1 bg-neutral-100 p-0.5 rounded-full border border-black/5">
+                  {/* Pack vs Case Selector Pills */}
+                  <div className="mt-1.5 grid grid-cols-2 gap-0.5 bg-neutral-100 p-0.5 rounded-full border border-black/5 text-[8.5px]">
                     <button
                       type="button"
                       onClick={(e) => toggleProductType(product.id, 'pack', e)}
-                      className={`text-[9px] py-0.5 px-1.5 rounded-full font-semibold transition-all ${
+                      className={`py-0.5 px-0.5 rounded-full font-medium text-center transition-all ${
                         selectedType === 'pack'
-                          ? 'bg-white text-neutral-900 shadow-2xs'
+                          ? 'bg-white text-neutral-900 shadow-2xs font-bold'
                           : 'text-neutral-500 hover:text-neutral-800'
                       }`}
                     >
@@ -335,25 +338,26 @@ export const ShopPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={(e) => toggleProductType(product.id, 'case', e)}
-                      className={`text-[9px] py-0.5 px-1.5 rounded-full font-semibold transition-all ${
+                      className={`py-0.5 px-0.5 rounded-full font-medium text-center transition-all truncate ${
                         selectedType === 'case'
-                          ? 'bg-white text-neutral-900 shadow-2xs'
+                          ? 'bg-white text-neutral-900 shadow-2xs font-bold'
                           : 'text-neutral-500 hover:text-neutral-800'
                       }`}
+                      title="Case (-5%)"
                     >
                       Case -5%
                     </button>
                   </div>
 
                   {/* Price & Fast Add Action */}
-                  <div className="flex items-center justify-between mt-2 pt-1">
-                    <span className="text-sm font-bold text-neutral-900">
+                  <div className="flex items-center justify-between mt-1.5 pt-0.5">
+                    <span className="text-xs font-bold text-neutral-900">
                       ${activePrice.toFixed(2)}
                     </span>
                     <button
                       type="button"
                       onClick={(e) => handleAddProduct(product, e)}
-                      className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:bg-black shadow-xs transition-all active:scale-90"
+                      className="w-6 h-6 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:bg-black shadow-xs transition-all active:scale-90 shrink-0"
                       aria-label={`Add ${product.name} to cart`}
                     >
                       <Plus className="w-3.5 h-3.5" />

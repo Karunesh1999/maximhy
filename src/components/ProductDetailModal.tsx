@@ -218,42 +218,46 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             )}
           </div>
 
-          {/* Sticky Bottom Actions matching Image 1 */}
-          <div className="pt-3 border-t border-black/5 flex items-center justify-between gap-4">
-            {/* Price & Quantity Stepper */}
-            <div className="flex flex-col">
-              <span className="text-[10px] uppercase font-bold text-neutral-400">Total Price</span>
-              <span className="text-2xl font-bold text-neutral-900 leading-none mt-0.5">
+          {/* Sticky Bottom Actions */}
+          <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-black/8 pt-3 pb-6 px-5 -mx-5 -mb-5 flex items-center justify-between gap-2.5 z-20">
+            {/* Total Price */}
+            <div className="flex flex-col shrink-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider text-neutral-400 leading-tight">
+                Total Price
+              </span>
+              <span className="text-xl font-bold text-neutral-900 leading-tight mt-0.5">
                 ${(activePrice * quantity).toFixed(2)}
               </span>
             </div>
 
             {/* Stepper Pill */}
-            <div className="flex items-center bg-neutral-100 rounded-full px-2 py-1 gap-2">
+            <div className="flex items-center bg-neutral-100 rounded-full p-1 gap-1 shrink-0 border border-black/5">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90"
+                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90 transition-transform"
+                aria-label="Decrease quantity"
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
-              <span className="w-5 text-center text-xs font-bold text-neutral-800">
+              <span className="w-5 text-center text-xs font-bold text-neutral-800 select-none">
                 {quantity}
               </span>
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90"
+                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90 transition-transform"
+                aria-label="Increase quantity"
               >
                 <Plus className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            {/* Full-width Bold Black Pill Button matching Image 1 */}
+            {/* Add to Cart Button */}
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-neutral-900 text-white rounded-full py-3.5 px-6 font-semibold text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+              className="flex-1 bg-neutral-900 text-white rounded-full py-3.5 px-4 font-semibold text-xs sm:text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
             >
               Add to cart
             </button>
