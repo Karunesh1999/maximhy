@@ -5,8 +5,8 @@ import {
   SlidersHorizontal,
   Heart,
   Plus,
-  Check,
   X,
+  RotateCcw,
   LayoutGrid,
   Leaf,
   Layers,
@@ -55,6 +55,19 @@ export const ShopPage: React.FC = () => {
       newParams.set('category', key)
     }
     setSearchParams(newParams, { replace: true })
+  }
+
+  const hasActiveFilters =
+    sortBy !== 'featured' ||
+    hsaOnly ||
+    searchQuery.trim() !== '' ||
+    activeCategory !== 'all'
+
+  const handleResetAllFilters = () => {
+    setSortBy('featured')
+    setHsaOnly(false)
+    setSearchQuery('')
+    handleSelectCategory('all')
   }
   const [productTypeSelections, setProductTypeSelections] = useState<Record<string, 'pack' | 'case'>>({})
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
@@ -152,56 +165,6 @@ export const ShopPage: React.FC = () => {
         </button>
       </div>
 
-      {/* Filter / Sort Drawer */}
-      {showFilterSheet && (
-        <div className="bg-white border border-black/8 rounded-2xl p-3 shadow-md animate-in fade-in duration-150 flex flex-col gap-2">
-          <div className="flex items-center justify-between border-b border-black/5 pb-1.5 font-bold text-neutral-900 text-xs">
-            <span>Filter & Sort Products</span>
-            <button
-              onClick={() => {
-                setSortBy('featured')
-                setHsaOnly(false)
-              }}
-              className="text-[10px] text-primary hover:underline font-semibold"
-            >
-              Reset
-            </button>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5 pt-1">
-            {[
-              { id: 'featured', label: 'Featured' },
-              { id: 'price-low', label: 'Price: Low to High' },
-              { id: 'price-high', label: 'Price: High to Low' },
-              { id: 'rating', label: 'Top Rated ★' },
-            ].map((opt) => (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setSortBy(opt.id as any)}
-                className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
-                  sortBy === opt.id
-                    ? 'bg-primary text-white shadow-2xs'
-                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
-            <button
-              type="button"
-              onClick={() => setHsaOnly(!hsaOnly)}
-              className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
-                hsaOnly
-                  ? 'bg-secondary text-white shadow-2xs'
-                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
-              }`}
-            >
-              ✓ HSA/FSA Only
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Circular Category Icons Row matching design */}
       <div
         ref={categoryContainerRef}
@@ -245,13 +208,105 @@ export const ShopPage: React.FC = () => {
         })}
       </div>
 
-      {/* Results Counter & Free Shipping Notification */}
+      {/* Results Counter & Filter / Reset Control Bar */}
       <div className="flex items-center justify-between text-xs text-neutral-500 px-1">
-        <span>{filteredProducts.length} Products Available</span>
-        <span className="flex items-center gap-1 text-[11px] text-secondary font-semibold">
-          <Check className="w-3.5 h-3.5 text-secondary" /> HSA/FSA Eligible
-        </span>
+        <span className="font-medium">{filteredProducts.length} Products Available</span>
+
+        {/* Dynamic Reset & Filter Controls at marked section */}
+        <div className="flex items-center gap-1.5">
+          {/* Reset Button: SHOWS when any filter is active, HIDES when no filter applied */}
+          {hasActiveFilters && (
+            <button
+              type="button"
+              onClick={handleResetAllFilters}
+              className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200/80 px-2.5 py-1 rounded-full shadow-2xs active:scale-95 transition-all animate-in fade-in"
+              title="Reset all active filters"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
+            </button>
+          )}
+
+          {/* Filter Toggle Button */}
+          <button
+            type="button"
+            onClick={() => setShowFilterSheet(!showFilterSheet)}
+            className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all active:scale-95 ${
+              showFilterSheet
+                ? 'bg-neutral-900 text-white border-neutral-900 shadow-2xs'
+                : sortBy !== 'featured' || hsaOnly
+                ? 'bg-primary/10 text-primary border-primary/30 font-bold shadow-2xs'
+                : 'bg-white text-neutral-700 border-black/8 hover:bg-neutral-50 shadow-2xs'
+            }`}
+          >
+            <SlidersHorizontal className="w-3 h-3" />
+            <span>Filter</span>
+            {(sortBy !== 'featured' || hsaOnly) && (
+              <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+            )}
+          </button>
+        </div>
       </div>
+
+      {/* Filter / Sort Drawer (shows/hides right at the marked section!) */}
+      {showFilterSheet && (
+        <div className="bg-white border border-black/8 rounded-2xl p-3 shadow-md animate-in fade-in slide-in-from-top-2 duration-150 flex flex-col gap-2">
+          <div className="flex items-center justify-between border-b border-black/5 pb-1.5 font-bold text-neutral-900 text-xs">
+            <span>Filter & Sort Products</span>
+            <div className="flex items-center gap-2">
+              {hasActiveFilters && (
+                <button
+                  type="button"
+                  onClick={handleResetAllFilters}
+                  className="text-[10px] text-rose-600 hover:underline font-semibold"
+                >
+                  Reset All
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={() => setShowFilterSheet(false)}
+                className="text-neutral-400 hover:text-neutral-700 p-0.5"
+                aria-label="Close filters"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            {[
+              { id: 'featured', label: 'Featured' },
+              { id: 'price-low', label: 'Price: Low to High' },
+              { id: 'price-high', label: 'Price: High to Low' },
+              { id: 'rating', label: 'Top Rated ★' },
+            ].map((opt) => (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setSortBy(opt.id as any)}
+                className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
+                  sortBy === opt.id
+                    ? 'bg-primary text-white shadow-2xs'
+                    : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => setHsaOnly(!hsaOnly)}
+              className={`text-[11px] px-3 py-1 rounded-full font-semibold transition-all ${
+                hsaOnly
+                  ? 'bg-secondary text-white shadow-2xs'
+                  : 'bg-neutral-100 text-neutral-600 hover:bg-neutral-200'
+              }`}
+            >
+              ✓ HSA/FSA Only
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Product Grid - 3 Columns on Mobile as requested */}
       {filteredProducts.length === 0 ? (
