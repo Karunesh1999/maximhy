@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import {
   Search,
@@ -22,19 +22,40 @@ import { ProductDetailModal } from '../components/ProductDetailModal'
 
 export const ShopPage: React.FC = () => {
   const { addItem } = useCart()
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const categoryParam = (searchParams.get('category') as ProductCategory) || 'all'
   const [searchQuery, setSearchQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<ProductCategory>(categoryParam)
   const [showFilterSheet, setShowFilterSheet] = useState(false)
   const [sortBy, setSortBy] = useState<'featured' | 'price-low' | 'price-high' | 'rating'>('featured')
   const [hsaOnly, setHsaOnly] = useState(false)
+  const categoryContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (categoryParam) {
-      setActiveCategory(categoryParam)
-    }
+    setActiveCategory(categoryParam)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
   }, [categoryParam])
+
+  useEffect(() => {
+    if (!categoryContainerRef.current) return
+    const activeEl = categoryContainerRef.current.querySelector<HTMLElement>(`[data-category="${activeCategory}"]`)
+    if (activeEl) {
+      activeEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+    }
+  }, [activeCategory])
+
+  const handleSelectCategory = (key: ProductCategory) => {
+    setActiveCategory(key)
+    const newParams = new URLSearchParams(searchParams)
+    if (key === 'all') {
+      newParams.delete('category')
+    } else {
+      newParams.set('category', key)
+    }
+    setSearchParams(newParams, { replace: true })
+  }
   const [productTypeSelections, setProductTypeSelections] = useState<Record<string, 'pack' | 'case'>>({})
   const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
@@ -182,7 +203,10 @@ export const ShopPage: React.FC = () => {
       )}
 
       {/* Circular Category Icons Row matching design */}
-      <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1 px-0.5">
+      <div
+        ref={categoryContainerRef}
+        className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1 px-0.5"
+      >
         {categoryIcons.map((item) => {
           const Icon = item.icon
           const isActive = activeCategory === item.key
@@ -190,15 +214,16 @@ export const ShopPage: React.FC = () => {
           return (
             <button
               key={item.key}
+              data-category={item.key}
               type="button"
-              onClick={() => setActiveCategory(item.key)}
+              onClick={() => handleSelectCategory(item.key)}
               className="flex flex-col items-center gap-1.5 min-w-[56px] shrink-0 transition-transform active:scale-95 group"
             >
               {/* Circular Icon Pill matching image */}
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
                   isActive
-                    ? 'border-2 border-primary text-primary bg-primary/5 shadow-2xs'
+                    ? 'border-2 border-primary text-primary bg-primary/10 shadow-sm ring-2 ring-primary/20 scale-105'
                     : 'bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs group-hover:border-black/20 group-hover:text-primary'
                 }`}
               >
@@ -236,7 +261,7 @@ export const ShopPage: React.FC = () => {
           <button
             onClick={() => {
               setSearchQuery('')
-              setActiveCategory('all')
+              handleSelectCategory('all')
             }}
             className="mt-4 text-xs bg-neutral-900 text-white px-5 py-2 rounded-full font-semibold hover:bg-black"
           >

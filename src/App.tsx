@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { Layout } from './components/Layout'
 import { DesktopDeviceFrame } from './components/DesktopDeviceFrame'
+import { ScrollToTop } from './components/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { ShopPage } from './pages/ShopPage'
 import { BundlesPage } from './pages/BundlesPage'
@@ -16,6 +17,7 @@ export const App: React.FC = () => {
     <DesktopDeviceFrame>
       <CartProvider>
         <BrowserRouter>
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
