@@ -9,6 +9,7 @@ import { ShopPage } from './pages/ShopPage'
 import { BundlesPage } from './pages/BundlesPage'
 import { SubscribePage } from './pages/SubscribePage'
 import { CartPage } from './pages/CartPage'
+import { ProfilePage } from './pages/ProfilePage'
 import { EducationPage } from './pages/EducationPage'
 import { FaqContactPage } from './pages/FaqContactPage'
 
@@ -25,6 +26,7 @@ export const App: React.FC = () => {
               <Route path="bundles" element={<BundlesPage />} />
               <Route path="subscribe" element={<SubscribePage />} />
               <Route path="cart" element={<CartPage />} />
+              <Route path="profile" element={<ProfilePage />} />
               <Route path="about" element={<Navigate to="/#about" replace />} />
               <Route path="education" element={<EducationPage />} />
               <Route path="faq" element={<FaqContactPage />} />

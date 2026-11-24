@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { ShieldAlert, CheckCircle2, XCircle, BookOpen, Sparkles } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { ShieldAlert, CheckCircle2, XCircle, BookOpen, Sparkles, ArrowLeft } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
 
 export const EducationPage: React.FC = () => {
+  const navigate = useNavigate()
   const [selectedFlow, setSelectedFlow] = useState<'light' | 'regular' | 'heavy' | 'postpartum'>('regular')
 
   const flowRecommendations = {
@@ -33,16 +34,34 @@ export const EducationPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-4">
-      {/* Page Header */}
-      <div className="pt-2">
-        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary uppercase tracking-widest bg-accent px-2.5 py-0.5 rounded-full mb-1.5">
-          <BookOpen className="w-3.5 h-3.5" /> Wellness Guide
+    <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* Page Header with Back Button */}
+      <div className="pt-1 flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (window.history.state && window.history.state.idx > 0) {
+                navigate(-1)
+              } else {
+                navigate('/profile')
+              }
+            }}
+            className="w-9 h-9 rounded-full bg-white border border-black/10 flex items-center justify-center text-neutral-800 hover:text-black hover:bg-neutral-50 shadow-2xs active:scale-95 transition-all shrink-0"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-4.5 h-4.5" />
+          </button>
+
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/10 px-2.5 py-1 rounded-full">
+            <BookOpen className="w-3.5 h-3.5" /> Wellness Guide
+          </div>
         </div>
-        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
+
+        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight mt-1">
           Period Health &amp; Cotton Guide
         </h1>
-        <p className="text-xs text-muted-foreground mt-0.5 font-medium leading-relaxed">
+        <p className="text-xs text-muted-foreground font-medium leading-relaxed">
           Understanding what goes into your body is the first step toward lifelong reproductive wellness.
         </p>
       </div>

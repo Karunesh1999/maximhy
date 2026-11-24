@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, ShoppingBag, CheckCircle2, ShieldCheck, Sparkles, X, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ShoppingBag, CheckCircle2, ShieldCheck, X, ChevronRight } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 
 export const CartPage: React.FC = () => {
@@ -102,8 +102,8 @@ export const CartPage: React.FC = () => {
           <div className="bg-white border border-black/6 rounded-2xl p-3.5 shadow-2xs flex flex-col gap-2">
             <div className="flex items-center justify-between text-xs font-semibold text-neutral-800">
               {isFreeShipping ? (
-                <span className="text-secondary flex items-center gap-1.5 font-bold">
-                  <Sparkles className="w-4 h-4 text-secondary" /> You unlocked Free Shipping!
+                <span className="text-secondary font-bold">
+                  You unlocked Free Shipping!
                 </span>
               ) : (
                 <span>Add ${amountToFreeShipping.toFixed(2)} more for Free Shipping</span>

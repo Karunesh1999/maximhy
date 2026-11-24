@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { ChevronDown, ChevronUp, Mail, Phone, MessageSquare, Check, Send } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { ChevronDown, ChevronUp, Mail, Phone, MessageSquare, Check, Send, ArrowLeft } from 'lucide-react'
 
 export const FaqContactPage: React.FC = () => {
+  const navigate = useNavigate()
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0)
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [inquiryData, setInquiryData] = useState({
@@ -44,13 +46,29 @@ export const FaqContactPage: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col gap-5 p-4">
-      {/* Header */}
-      <div className="pt-2">
-        <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
-          Help &amp; Contact Us
-        </h1>
-        <p className="text-xs text-muted-foreground mt-0.5 font-medium leading-relaxed">
+    <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* Header with Back Navigation */}
+      <div className="pt-1 flex flex-col gap-2">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (window.history.state && window.history.state.idx > 0) {
+                navigate(-1)
+              } else {
+                navigate('/profile')
+              }
+            }}
+            className="w-9 h-9 rounded-full bg-white border border-black/10 flex items-center justify-center text-neutral-800 hover:text-black hover:bg-neutral-50 shadow-2xs active:scale-95 transition-all shrink-0"
+            aria-label="Back"
+          >
+            <ArrowLeft className="w-4.5 h-4.5" />
+          </button>
+          <h1 className="font-headline font-bold text-2xl text-foreground tracking-tight">
+            Help &amp; Contact Us
+          </h1>
+        </div>
+        <p className="text-xs text-muted-foreground font-medium leading-relaxed">
           Questions about our 100% organic cotton products, order tracking, or subscription care? We're here for you.
         </p>
       </div>

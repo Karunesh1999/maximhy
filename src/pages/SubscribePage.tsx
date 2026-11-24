@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
-import { Check, CheckCircle2, Circle, Sparkles, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Check, CheckCircle2, Circle, ArrowRight, ArrowLeft } from 'lucide-react'
 import { SUBSCRIPTION_ESSENTIALS } from '../data/bundles'
 import type { DeliveryFrequency } from '../types'
 
 export const SubscribePage: React.FC = () => {
+  const navigate = useNavigate()
   const [frequency, setFrequency] = useState<DeliveryFrequency>('30')
   const [selectedItemIds, setSelectedItemIds] = useState<string[]>(['sub-cardboard-tampons', 'sub-ultra-thin-pads'])
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false)
@@ -38,18 +40,30 @@ export const SubscribePage: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-5 p-4 pb-28">
-      {/* Page Header matching Image 1 */}
-      <div className="pt-1 px-1">
-        <div className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-primary mb-1">
-          <Sparkles className="w-3 h-3 text-secondary" /> Auto-Delivery Service
+      {/* Top Header with Back Button */}
+      <div className="pt-1 flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.state && window.history.state.idx > 0) {
+              navigate(-1)
+            } else {
+              navigate('/')
+            }
+          }}
+          className="w-9 h-9 rounded-full bg-white border border-black/10 flex items-center justify-center text-neutral-800 hover:text-black hover:bg-neutral-50 shadow-2xs active:scale-95 transition-all shrink-0"
+          aria-label="Go back"
+        >
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <div>
+          <h1 className="text-base font-bold text-neutral-900 leading-tight">
+            Auto-Delivery Plan
+          </h1>
+          <p className="text-[11px] text-neutral-500">
+            Save 5% on recurring essentials
+          </p>
         </div>
-        <h1 className="text-3xl font-medium tracking-tight text-neutral-900 leading-[1.16]">
-          MyPeriodPlan™<br />
-          <span className="font-serif italic text-primary">Zero Hassle Care</span>
-        </h1>
-        <p className="text-xs text-neutral-500 mt-1 font-medium">
-          Save 5% on every cycle. Pause, edit, or cancel anytime.
-        </p>
       </div>
 
       {/* Delivery Frequency Selector */}
