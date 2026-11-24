@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ShoppingBag, Menu, X, Leaf, Sparkles, BookOpen, Info, ShieldCheck } from 'lucide-react'
+import { ShoppingBag, Menu, X, Leaf, BookOpen, Info, ShieldCheck } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 
 export const Header: React.FC = () => {
@@ -9,11 +9,7 @@ export const Header: React.FC = () => {
 
   return (
     <header className="sticky top-0 z-40 bg-surface-container-lowest/95 backdrop-blur-md border-b border-outline-variant/60 shadow-xs">
-      {/* Announcement Strip */}
-      <div className="bg-inverse-surface text-inverse-on-surface px-4 py-1.5 text-center text-xs tracking-wide font-medium flex items-center justify-center gap-2">
-        <Sparkles className="w-3.5 h-3.5 text-accent" />
-        <span>Free Shipping $39.99+ · Same Day before 2pm EST</span>
-      </div>
+      
 
       {/* Main Bar */}
       <div className="px-4 py-3 flex items-center justify-between gap-3">
