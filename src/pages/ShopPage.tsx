@@ -410,7 +410,7 @@ export const ShopPage: React.FC = () => {
                     <button
                       type="button"
                       onClick={(e) => handleAddProduct(product, e)}
-                      className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center hover:bg-black shadow-xs transition-all active:scale-90 shrink-0"
+                      className="w-7 h-7 rounded-full bg-[#FCE7F3] text-[#7A1C3A] flex items-center justify-center hover:bg-[#FBCFE8] shadow-xs transition-all active:scale-90 shrink-0"
                       aria-label={`Add ${product.name} to cart`}
                     >
                       <Plus className="w-3.5 h-3.5" />
