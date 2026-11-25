@@ -9,30 +9,35 @@ export const NotificationToast: React.FC = () => {
   if (!isNotificationOpen) return null
 
   return (
-    <aside 
+    <aside
       aria-label="Cart Notification"
-      className="fixed bottom-20 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 bg-inverse-surface text-inverse-on-surface p-3.5 rounded-xl shadow-xl flex items-center justify-between gap-3 animate-in fade-in slide-in-from-bottom-3 duration-200"
+      className="fixed bottom-[88px] left-1/2 -translate-x-1/2 w-[90%] max-w-[330px] z-50 bg-white/95 backdrop-blur-xl border border-pink-200/80 text-neutral-900 py-2 px-2.5 rounded-full shadow-[0_12px_30px_-6px_rgba(122,28,58,0.18)] flex items-center justify-between gap-2.5 animate-in fade-in slide-in-from-bottom-3 duration-200"
     >
-      <div className="flex items-center gap-2.5 overflow-hidden">
-        <CheckCircle2 className="w-5 h-5 text-secondary shrink-0" />
+      <div className="flex items-center gap-2 min-w-0">
+        <div className="w-7 h-7 rounded-full bg-[#FCE7F3] text-[#7A1C3A] flex items-center justify-center shrink-0">
+          <CheckCircle2 className="w-4 h-4" />
+        </div>
         <div className="text-xs truncate">
-          <span className="font-bold">{lastAddedName}</span> added to bag!
+          <span className="font-semibold text-neutral-900">{lastAddedName}</span>{' '}
+          <span className="text-neutral-500">added</span>
         </div>
       </div>
-      <div className="flex items-center gap-2 shrink-0">
+
+      <div className="flex items-center gap-1.5 shrink-0">
         <Link
           to="/cart"
           onClick={dismissNotification}
-          className="bg-primary text-primary-foreground text-xs px-2.5 py-1 rounded-md font-semibold hover:opacity-90 transition-opacity"
+          className="bg-[#7A1C3A] hover:bg-[#61152D] text-white text-[11px] px-3 py-1.5 rounded-full font-semibold transition-all active:scale-95"
         >
           View Bag
         </Link>
         <button
+          type="button"
           onClick={dismissNotification}
-          className="text-inverse-on-surface/70 hover:text-inverse-on-surface p-0.5"
+          className="w-6 h-6 rounded-full text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100 flex items-center justify-center transition-colors"
           aria-label="Close notification"
         >
-          <X className="w-4 h-4" />
+          <X className="w-3.5 h-3.5" />
         </button>
       </div>
     </aside>

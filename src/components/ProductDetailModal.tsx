@@ -29,18 +29,17 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-      <div className="bg-white w-full max-w-md max-h-[92vh] rounded-t-[36px] sm:rounded-[36px] overflow-y-auto no-scrollbar shadow-2xl flex flex-col relative">
-        {/* Top Pastel Hero Section matching Image 1 (Screen 1) */}
+      <div className="bg-white w-full max-w-md max-h-[92vh] rounded-t-[36px] sm:rounded-[36px] overflow-hidden shadow-2xl flex flex-col relative">
+        <div className="overflow-y-auto no-scrollbar flex flex-col flex-1">
+          {/* Top Hero Image Section */}
         <div
-          className={`relative w-full ${
-            product.pastelBg || 'bg-[#FDECEF]'
-          } p-4 pt-5 pb-6 flex flex-col items-center justify-between rounded-t-[36px] sm:rounded-t-[36px] min-h-[310px]`}
+          className="relative isolate w-full bg-white border-b border-black/5 p-4 pt-5 pb-4 flex flex-col items-center justify-between rounded-t-[36px] overflow-hidden min-h-[310px]"
         >
           {/* Top Bar with Circle Back Arrow & Heart Button */}
           <div className="w-full flex items-center justify-between z-10 px-1">
             <button
               onClick={onClose}
-              className="w-10 h-10 rounded-full bg-white shadow-xs border border-black/5 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
+              className="w-10 h-10 rounded-full bg-white/95 shadow-xs border border-black/8 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
               aria-label="Back"
             >
               <ArrowLeft className="w-5 h-5" />
@@ -48,7 +47,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
 
             <button
               onClick={() => toggleWishlist(product.id)}
-              className="w-10 h-10 rounded-full bg-white shadow-xs border border-black/5 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
+              className="w-10 h-10 rounded-full bg-white/95 shadow-xs border border-black/8 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
               aria-label="Wishlist"
             >
               <Heart
@@ -59,12 +58,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             </button>
           </div>
 
-          {/* Centered Large Packaging Photo */}
-          <div className="w-56 h-56 flex items-center justify-center my-1">
+          {/* Full-Width Product Packaging Photo */}
+          <div className="w-full h-64 flex items-center justify-center my-1 overflow-hidden">
             <img
               src={product.image}
               alt={product.name}
-              className="max-h-full max-w-full object-contain drop-shadow-md hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-contain"
             />
           </div>
 
@@ -265,6 +264,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
               Add to cart
             </button>
           </div>
+        </div>
         </div>
       </div>
     </div>

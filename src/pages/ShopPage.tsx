@@ -334,17 +334,15 @@ export const ShopPage: React.FC = () => {
                 onClick={() => setSelectedProductForModal(product)}
                 className="group flex flex-col justify-between cursor-pointer select-none"
               >
-                {/* Pastel Box matching Image 1 */}
+                {/* Product Image Card */}
                 <div
-                  className={`relative aspect-square w-full ${
-                    product.pastelBg || 'bg-[#FDECEF]'
-                  } rounded-2xl p-2.5 flex items-center justify-center overflow-hidden shadow-2xs transition-transform duration-200 group-hover:-translate-y-0.5`}
+                  className="relative aspect-square w-full bg-white border border-black/8 rounded-2xl flex items-center justify-center overflow-hidden shadow-2xs transition-transform duration-200 group-hover:-translate-y-0.5"
                 >
                   {/* Wishlist Heart Button in circle */}
                   <button
                     type="button"
                     onClick={(e) => toggleWishlist(product.id, e)}
-                    className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/85 backdrop-blur-xs flex items-center justify-center text-neutral-500 hover:text-rose-500 hover:bg-white shadow-2xs transition-all active:scale-90"
+                    className="absolute top-2 right-2 z-10 w-7 h-7 rounded-full bg-white/90 backdrop-blur-xs border border-black/5 flex items-center justify-center text-neutral-500 hover:text-rose-500 hover:bg-white shadow-2xs transition-all active:scale-90"
                     aria-label="Save to wishlist"
                   >
                     <Heart
@@ -358,7 +356,7 @@ export const ShopPage: React.FC = () => {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-full object-contain p-1 group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                    className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     loading="lazy"
                   />
                 </div>
