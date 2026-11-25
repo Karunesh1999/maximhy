@@ -27,6 +27,30 @@ export interface OrderRecord {
 
 export const INITIAL_ORDERS: OrderRecord[] = [
   {
+    id: 'MX-9108',
+    date: 'Nov 25, 2026',
+    total: '$11.25',
+    status: 'Processing',
+    items: '1x Organic Cotton Plastic Applicator Tampons (16ct)',
+    itemCount: 1,
+    image: '/images/products/organic-cotton-plastic-applica.png',
+    deliveryEstimate: 'Estimated 2 - 3 Business Days',
+    shippingAddress: '742 Evergreen Terrace, Springfield, OR 97477',
+    paymentMethod: 'Credit Card',
+  },
+  {
+    id: 'MX-9064',
+    date: 'Nov 24, 2026',
+    total: '$18.90',
+    status: 'In Transit',
+    items: '1x Organic Cotton Nursing Pads (30ct), 1x Facial Wipes (20ct)',
+    itemCount: 2,
+    image: '/images/products/maternity-nursing-pads.jpg',
+    deliveryEstimate: 'Arriving Nov 27',
+    shippingAddress: '742 Evergreen Terrace, Springfield, OR 97477',
+    paymentMethod: 'Apple Pay',
+  },
+  {
     id: 'MX-9031',
     date: 'Nov 23, 2026',
     total: '$21.14',
@@ -64,28 +88,15 @@ export const INITIAL_ORDERS: OrderRecord[] = [
   },
 ]
 
+// In-memory session orders (resets to the 5 default orders on every page refresh)
+let sessionOrders: OrderRecord[] = [...INITIAL_ORDERS]
+
 export function getStoredOrders(): OrderRecord[] {
-  try {
-    const raw = localStorage.getItem('maximhy_orders')
-    if (raw) {
-      const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed
-      }
-    }
-  } catch {
-    // fallback to initial orders
-  }
-  return INITIAL_ORDERS
+  return sessionOrders
 }
 
 export function saveOrderToStorage(newOrder: OrderRecord): void {
-  try {
-    const existing = getStoredOrders()
-    localStorage.setItem('maximhy_orders', JSON.stringify([newOrder, ...existing]))
-  } catch {
-    // ignore storage errors
-  }
+  sessionOrders = [newOrder, ...sessionOrders]
 }
 
 const TRACKING_STEPS: OrderRecord['status'][] = ['Processing', 'In Transit', 'Delivered']
@@ -122,11 +133,7 @@ export const OrdersPage: React.FC = () => {
               : order.deliveryEstimate,
         }
       })
-      try {
-        localStorage.setItem('maximhy_orders', JSON.stringify(updated))
-      } catch {
-        // ignore storage errors
-      }
+      sessionOrders = updated
       return updated
     })
   }
