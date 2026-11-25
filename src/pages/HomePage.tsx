@@ -1,6 +1,17 @@
 import React, { useState, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ChevronRight } from 'lucide-react'
+import {
+  ChevronRight,
+  Search,
+  X,
+  LayoutGrid,
+  Leaf,
+  Layers,
+  Droplets,
+  Flower2,
+  ShieldCheck,
+  Feather
+} from 'lucide-react'
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { ProductDetailModal } from '../components/ProductDetailModal'
@@ -38,6 +49,32 @@ const CATEGORY_SECTIONS: {
 
 export const HomePage: React.FC = () => {
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [activeCategory, setActiveCategory] = useState<ProductCategory>('all')
+  const categoryContainerRef = useRef<HTMLDivElement>(null)
+
+  const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
+    { key: 'all', label: 'All', icon: LayoutGrid },
+    { key: 'tampons', label: 'Tampons', icon: Leaf },
+    { key: 'pads-liners', label: 'Pads', icon: Layers },
+    { key: 'wipes', label: 'Wipes', icon: Droplets },
+    { key: 'beauty', label: 'Beauty', icon: Flower2 },
+    { key: 'maternity', label: 'Maternity', icon: ShieldCheck },
+    { key: 'underwear', label: 'Underwear', icon: Feather },
+  ]
+
+  const searchResults = useMemo(() => {
+    if (!searchQuery.trim()) return []
+    const q = searchQuery.toLowerCase()
+    return PRODUCTS.filter((product) => {
+      const matchesCat = activeCategory === 'all' || product.category === activeCategory
+      const matchesQuery =
+        product.name.toLowerCase().includes(q) ||
+        product.description.toLowerCase().includes(q) ||
+        product.tagline.toLowerCase().includes(q)
+      return matchesCat && matchesQuery
+    })
+  }, [searchQuery, activeCategory])
 
   // Curated Featured Products matching maximhy.com homepage picks
   const displayedProducts = useMemo(() => {
@@ -54,8 +91,133 @@ export const HomePage: React.FC = () => {
     setActiveCarouselIndex(Math.min(displayedProducts.length - 1, Math.max(0, index)))
   }
 
+  const isSearching = searchQuery.trim() !== ''
+
   return (
     <div className="flex flex-col gap-5 p-4 pb-28">
+      {/* 1. Search Bar */}
+      <div className="relative">
+        <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Search organic tampons, pads, wipes..."
+          className="w-full bg-white border border-black/8 rounded-full pl-10 pr-9 py-2.5 text-xs text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-1 focus:ring-neutral-900 shadow-2xs"
+        />
+        {searchQuery && (
+          <button
+            type="button"
+            onClick={() => setSearchQuery('')}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-700 p-1"
+            aria-label="Clear search"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
+      </div>
+
+      {/* 2. Circular Category Icons Row matching ShopPage */}
+      <div
+        ref={categoryContainerRef}
+        className="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-1 px-0.5"
+      >
+        {categoryIcons.map((item) => {
+          const Icon = item.icon
+          const isActive = activeCategory === item.key
+
+          return (
+            <button
+              key={item.key}
+              data-category={item.key}
+              type="button"
+              onClick={() => setActiveCategory(item.key)}
+              className="flex flex-col items-center gap-1.5 min-w-[56px] shrink-0 transition-transform active:scale-95 group"
+            >
+              <div
+                className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
+                  isActive
+                    ? 'border-2 border-primary text-primary bg-primary/10 shadow-sm ring-2 ring-primary/20 scale-105'
+                    : 'bg-white text-neutral-700 border border-black/8 hover:bg-neutral-50 shadow-2xs group-hover:border-black/20 group-hover:text-primary'
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
+
+              <span
+                className={`text-[11px] tracking-tight transition-colors ${
+                  isActive
+                    ? 'text-primary font-bold'
+                    : 'text-neutral-600 font-medium group-hover:text-neutral-900'
+                }`}
+              >
+                {item.label}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      {isSearching ? (
+        /* Search Results Grid (2 Columns) */
+        <section className="flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <h2 className="text-[15px] sm:text-base font-bold text-neutral-900 font-serif tracking-tight">
+              Search Results ({searchResults.length})
+            </h2>
+            <button
+              type="button"
+              onClick={() => setSearchQuery('')}
+              className="text-xs font-semibold text-primary hover:underline"
+            >
+              Clear search
+            </button>
+          </div>
+
+          {searchResults.length === 0 ? (
+            <div className="text-center py-10 bg-white rounded-3xl p-6 border border-black/5 shadow-2xs">
+              <p className="text-sm font-semibold text-neutral-800">No products found</p>
+              <p className="text-xs text-neutral-500 mt-1">
+                Try another keyword or switch categories.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('')
+                  setActiveCategory('all')
+                }}
+                className="mt-4 text-xs bg-neutral-900 text-white px-5 py-2 rounded-full font-semibold hover:bg-black"
+              >
+                Reset Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3">
+              {searchResults.map((product) => (
+                <div
+                  key={product.id}
+                  onClick={() => setSelectedProductForModal(product)}
+                  className="flex flex-col items-center group cursor-pointer select-none transition-transform active:scale-95"
+                >
+                  <div className="relative w-full aspect-square rounded-2xl bg-white border border-black/8 overflow-hidden shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="absolute inset-0 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                      loading="lazy"
+                    />
+                  </div>
+
+                  <span className="text-xs font-semibold text-neutral-800 text-center leading-snug line-clamp-2 min-h-[34px] px-1 mt-2 group-hover:text-primary transition-colors">
+                    {product.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ) : (
+        <>
       {/* 3. Horizontal Promo Banner Carousel matching the uploaded image */}
       <div className="flex gap-3.5 overflow-x-auto no-scrollbar py-1 snap-x snap-mandatory">
         {/* Banner Card 1: Warm Amber/Berry Organic Cotton Card */}
@@ -181,17 +343,17 @@ export const HomePage: React.FC = () => {
               className="w-[124px] sm:w-[134px] shrink-0 snap-start flex flex-col items-center gap-2 group cursor-pointer select-none transition-transform active:scale-95"
             >
               {/* Product Image Card */}
-              <div className="w-full aspect-square rounded-2xl bg-white border border-black/8 p-3 flex items-center justify-center shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
+              <div className="relative w-full aspect-square rounded-2xl bg-white border border-black/8 overflow-hidden shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                  className="absolute inset-0 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                   loading="lazy"
                 />
               </div>
 
               {/* Product Name Below Image */}
-              <span className="text-[11px] font-semibold text-neutral-800 text-center leading-snug line-clamp-2 px-1 group-hover:text-primary transition-colors">
+              <span className="text-[11px] font-semibold text-neutral-800 text-center leading-snug line-clamp-2 min-h-[30px] px-1 group-hover:text-primary transition-colors">
                 {product.name}
               </span>
             </div>
@@ -222,10 +384,13 @@ export const HomePage: React.FC = () => {
         )}
       </div>
 
-      {/* Category Wise Sections (2-row, 3-column layout with 3 cards each) */}
+      {/* Category Wise Sections (2-column layout) */}
       <div className="flex flex-col gap-7 pt-1">
-        {CATEGORY_SECTIONS.map((sec) => {
-          const categoryProducts = PRODUCTS.filter((p) => p.category === sec.key).slice(0, 3)
+        {CATEGORY_SECTIONS.filter((sec) => activeCategory === 'all' || sec.key === activeCategory).map((sec) => {
+          const categoryProducts = PRODUCTS.filter((p) => p.category === sec.key).slice(
+            0,
+            activeCategory === 'all' ? 4 : undefined
+          )
           if (categoryProducts.length === 0) return null
 
           return (
@@ -244,8 +409,8 @@ export const HomePage: React.FC = () => {
                 </Link>
               </div>
 
-              {/* Row 2: 3 Columns with 3 Cards (Product Image & Name only) */}
-              <div className="grid grid-cols-3 gap-2.5">
+              {/* Row 2: 2 Columns (Product Image & Name) */}
+              <div className="grid grid-cols-2 gap-3">
                 {categoryProducts.map((product) => (
                   <div
                     key={product.id}
@@ -253,17 +418,17 @@ export const HomePage: React.FC = () => {
                     className="flex flex-col items-center group cursor-pointer select-none transition-transform active:scale-95"
                   >
                     {/* Minimalist Card Box with Product Image */}
-                    <div className="w-full aspect-square rounded-2xl bg-white border border-black/8 p-2.5 flex items-center justify-center shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
+                    <div className="relative w-full aspect-square rounded-2xl bg-white border border-black/8 overflow-hidden shadow-2xs group-hover:shadow-xs group-hover:border-black/20 transition-all">
                       <img
                         src={product.image}
                         alt={product.name}
-                        className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
+                        className="absolute inset-0 w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300 drop-shadow-2xs"
                         loading="lazy"
                       />
                     </div>
 
                     {/* Product Name Below Card */}
-                    <span className="text-[11px] font-semibold text-neutral-800 text-center leading-snug line-clamp-2 px-0.5 mt-1.5 group-hover:text-primary transition-colors">
+                    <span className="text-xs font-semibold text-neutral-800 text-center leading-snug line-clamp-2 min-h-[34px] px-1 mt-2 group-hover:text-primary transition-colors">
                       {product.name}
                     </span>
                   </div>
@@ -273,6 +438,8 @@ export const HomePage: React.FC = () => {
           )
         })}
       </div>
+        </>
+      )}
 
       {/* Interactive Product Details Modal */}
       <ProductDetailModal

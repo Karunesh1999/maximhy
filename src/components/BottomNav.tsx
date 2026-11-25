@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Home, Store, Package, ShoppingBag } from 'lucide-react'
+import { Home, Store, PackageCheck, ShoppingBag } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 
 export const BottomNav: React.FC = () => {
@@ -9,7 +9,7 @@ export const BottomNav: React.FC = () => {
   const navItems = [
     { to: '/', label: 'Home', icon: Home },
     { to: '/shop', label: 'Shop', icon: Store },
-    { to: '/bundles', label: 'Bundles', icon: Package },
+    { to: '/orders', label: 'Orders', icon: PackageCheck },
     { to: '/cart', label: 'Cart', icon: ShoppingBag, badge: totalCount },
   ]
 

@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, ShoppingBag, CheckCircle2, ShieldCheck, X, ChevronRight } from 'lucide-react'
 import { useCart } from '../context/CartContext'
+import { saveOrderToStorage } from './OrdersPage'
 
 export const CartPage: React.FC = () => {
   const {
@@ -49,6 +50,27 @@ export const CartPage: React.FC = () => {
 
   const handleCompleteOrder = () => {
     const randomOrder = 'MXH-' + Math.floor(100000 + Math.random() * 900000)
+    const itemSummary = items.map((i) => `${i.quantity}x ${i.name} (${i.unitInfo})`).join(', ')
+    const totalItemsCount = items.reduce((sum, i) => sum + i.quantity, 0)
+    const todayFormatted = new Date().toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    })
+
+    saveOrderToStorage({
+      id: randomOrder,
+      date: todayFormatted,
+      total: `$${total.toFixed(2)}`,
+      status: 'Processing',
+      items: itemSummary,
+      itemCount: totalItemsCount,
+      image: items[0]?.image || '/images/products/tampons-cardboard-reg.jpg',
+      deliveryEstimate: 'Estimated 2 - 3 Business Days',
+      shippingAddress: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`,
+      paymentMethod: formData.paymentMethod,
+    })
+
     setOrderNumber(randomOrder)
     setCheckoutStep('success')
   }

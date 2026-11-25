@@ -7,7 +7,7 @@ import { DesktopDeviceFrame } from './components/DesktopDeviceFrame'
 import { ScrollToTop } from './components/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { ShopPage } from './pages/ShopPage'
-import { BundlesPage } from './pages/BundlesPage'
+import { OrdersPage } from './pages/OrdersPage'
 import { SubscribePage } from './pages/SubscribePage'
 import { CartPage } from './pages/CartPage'
 import { ProfilePage } from './pages/ProfilePage'
@@ -25,7 +25,8 @@ export const App: React.FC = () => {
               <Route path="/" element={<Layout />}>
                 <Route index element={<HomePage />} />
                 <Route path="shop" element={<ShopPage />} />
-                <Route path="bundles" element={<BundlesPage />} />
+                <Route path="orders" element={<OrdersPage />} />
+                <Route path="bundles" element={<Navigate to="/orders" replace />} />
                 <Route path="subscribe" element={<SubscribePage />} />
                 <Route path="cart" element={<CartPage />} />
                 <Route path="profile" element={<ProfilePage />} />

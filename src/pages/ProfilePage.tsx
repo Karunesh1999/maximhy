@@ -4,7 +4,6 @@ import {
   ArrowLeft,
   Camera,
   User,
-  Package,
   Bell,
   MapPin,
   HelpCircle,
@@ -12,7 +11,6 @@ import {
   RefreshCw,
   ChevronRight,
   Check,
-  Truck,
   ShieldCheck,
   Mail,
   Phone,
@@ -31,7 +29,6 @@ type ProfileView =
   | 'menu'
   | 'profile'
   | 'wishlist'
-  | 'orders'
   | 'auto-delivery'
   | 'notifications'
   | 'addresses'
@@ -146,37 +143,6 @@ export const ProfilePage: React.FC = () => {
     },
   ]
 
-  // Mock orders
-  const orders = [
-    {
-      id: 'MX-9031',
-      date: 'Nov 23, 2026',
-      total: '$19.86',
-      status: 'In Transit',
-      statusColor: 'text-amber-600 bg-amber-50 border-amber-200',
-      items: '2x Organic Cotton Tampons (16ct)',
-      deliveryEstimate: 'Arriving Tomorrow, Nov 25',
-    },
-    {
-      id: 'MX-8924',
-      date: 'Nov 12, 2026',
-      total: '$24.64',
-      status: 'Delivered',
-      statusColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
-      items: '1x MaxION™ Silver Ion Pads (14ct), 1x Makeup Ovals (50ct)',
-      deliveryEstimate: 'Delivered to Doorstep',
-    },
-    {
-      id: 'MX-8410',
-      date: 'Oct 15, 2026',
-      total: '$32.90',
-      status: 'Delivered',
-      statusColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
-      items: '1x Ultra Thin Day Pads Bundle (4-Pack)',
-      deliveryEstimate: 'Delivered',
-    },
-  ]
-
   const handleBack = () => {
     if (activeView !== 'menu') {
       setActiveView('menu')
@@ -217,7 +183,6 @@ export const ProfilePage: React.FC = () => {
               {activeView === 'menu' && 'My Profile'}
               {activeView === 'profile' && 'Personal Info'}
               {activeView === 'wishlist' && 'My Wishlist'}
-              {activeView === 'orders' && 'Product Orders'}
               {activeView === 'auto-delivery' && 'Auto-Delivery Plan'}
               {activeView === 'notifications' && 'Notifications'}
               {activeView === 'addresses' && 'Delivery Addresses'}
@@ -225,7 +190,7 @@ export const ProfilePage: React.FC = () => {
               {activeView === 'about' && 'About Maxim Hygiene'}
             </h1>
             {activeView === 'menu' && (
-              <p className="text-[11px] text-neutral-500">Manage account, orders &amp; preferences</p>
+              <p className="text-[11px] text-neutral-500">Manage account, wishlist &amp; preferences</p>
             )}
           </div>
         </div>
@@ -316,30 +281,7 @@ export const ProfilePage: React.FC = () => {
 
           {/* Menu List of Features */}
           <div className="bg-white border border-black/8 rounded-2xl overflow-hidden divide-y divide-black/5 shadow-2xs">
-            {/* 1. Product Orders */}
-            <button
-              type="button"
-              onClick={() => setActiveView('orders')}
-              className="w-full px-4 py-3.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-sky-50 text-sky-700 flex items-center justify-center">
-                  <Package className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-neutral-900">Product Orders</div>
-                  <div className="text-[10px] text-neutral-500">Track shipments &amp; order history</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-[10px] bg-sky-100 text-sky-800 font-semibold px-2 py-0.5 rounded-full">
-                  1 In Transit
-                </span>
-                <ChevronRight className="w-4 h-4 text-neutral-400" />
-              </div>
-            </button>
-
-            {/* 2. My Wishlist */}
+            {/* 1. My Wishlist */}
             <button
               type="button"
               onClick={() => setActiveView('wishlist')}
@@ -596,63 +538,7 @@ export const ProfilePage: React.FC = () => {
         </form>
       )}
 
-      {/* ===================== VIEW 3: PRODUCT ORDERS ===================== */}
-      {activeView === 'orders' && (
-        <div className="flex flex-col gap-3 animate-in fade-in duration-150">
-          <div className="flex items-center justify-between text-xs text-neutral-500 mb-1">
-            <span>Recent Purchases ({orders.length})</span>
-            <span className="text-[10px] text-primary font-semibold">Track Live</span>
-          </div>
-
-          {orders.map((order) => (
-            <div
-              key={order.id}
-              className="bg-white border border-black/8 rounded-2xl p-4 flex flex-col gap-2.5 shadow-2xs hover:border-black/20 transition-all"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-neutral-900">Order #{order.id}</span>
-                  <span className="text-[10px] text-neutral-400">• {order.date}</span>
-                </div>
-                <span
-                  className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${order.statusColor}`}
-                >
-                  {order.status}
-                </span>
-              </div>
-
-              <p className="text-xs text-neutral-700 font-medium">{order.items}</p>
-
-              <div className="flex items-center justify-between pt-2 border-t border-black/5 text-[11px]">
-                <div className="flex items-center gap-1.5 text-neutral-600">
-                  <Truck className="w-3.5 h-3.5 text-neutral-500" />
-                  <span>{order.deliveryEstimate}</span>
-                </div>
-                <span className="font-bold text-neutral-900">{order.total}</span>
-              </div>
-
-              <div className="flex gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => navigate('/shop')}
-                  className="flex-1 py-1.5 rounded-lg border border-black/10 text-[11px] font-semibold text-neutral-700 hover:bg-neutral-50"
-                >
-                  Buy Again
-                </button>
-                <button
-                  type="button"
-                  onClick={() => navigate('/faq')}
-                  className="py-1.5 px-3 rounded-lg border border-black/10 text-[11px] font-semibold text-neutral-500 hover:bg-neutral-50"
-                >
-                  Need Help?
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* ===================== VIEW 4: AUTO-DELIVERY (MyPeriodPlan) ===================== */}
+      {/* ===================== VIEW 3: AUTO-DELIVERY (MyPeriodPlan) ===================== */}
       {activeView === 'auto-delivery' && (
         <div className="flex flex-col gap-4 animate-in fade-in duration-150">
           <div className="bg-gradient-to-tr from-primary/10 via-rose-50 to-amber-50/70 border border-primary/20 rounded-2xl p-4 flex flex-col gap-2">
