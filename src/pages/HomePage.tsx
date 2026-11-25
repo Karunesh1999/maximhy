@@ -186,7 +186,7 @@ export const HomePage: React.FC = () => {
                   setSearchQuery('')
                   setActiveCategory('all')
                 }}
-                className="mt-4 text-xs bg-neutral-900 text-white px-5 py-2 rounded-full font-semibold hover:bg-black"
+                className="mt-4 text-xs bg-[#7A1C3A] text-white px-5 py-2 rounded-full font-semibold hover:bg-[#61152D] transition-all"
               >
                 Reset Filters
               </button>
@@ -247,7 +247,7 @@ export const HomePage: React.FC = () => {
           <div className="relative z-10 mt-3">
             <Link
               to="/shop"
-              className="inline-block bg-neutral-900 text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-black active:scale-95 transition-all shadow-xs"
+              className="inline-block bg-[#7A1C3A] text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-[#61152D] active:scale-95 transition-all shadow-xs"
             >
               Get 5% discount
             </Link>
@@ -277,7 +277,7 @@ export const HomePage: React.FC = () => {
           <div className="relative z-10 mt-3">
             <Link
               to="/shop"
-              className="inline-block bg-neutral-900 text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-black active:scale-95 transition-all shadow-xs"
+              className="inline-block bg-[#7A1C3A] text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-[#61152D] active:scale-95 transition-all shadow-xs"
             >
               Buy Now
             </Link>

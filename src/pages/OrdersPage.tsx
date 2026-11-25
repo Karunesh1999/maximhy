@@ -151,7 +151,7 @@ export const OrdersPage: React.FC = () => {
               onClick={() => setStatusFilter(tab.key)}
               className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
                 isActive
-                  ? 'bg-neutral-900 text-white shadow-xs'
+                  ? 'bg-[#7A1C3A] text-white hover:bg-[#61152D] shadow-xs'
                   : 'bg-white text-neutral-600 border border-black/8 hover:bg-neutral-50'
               }`}
             >
@@ -173,7 +173,7 @@ export const OrdersPage: React.FC = () => {
           </p>
           <Link
             to="/shop"
-            className="mt-2 bg-neutral-900 text-white text-xs font-semibold px-6 py-2.5 rounded-full hover:bg-black transition-all shadow-xs"
+            className="mt-2 bg-[#7A1C3A] text-white text-xs font-semibold px-6 py-2.5 rounded-full hover:bg-[#61152D] transition-all shadow-xs"
           >
             Browse Products
           </Link>

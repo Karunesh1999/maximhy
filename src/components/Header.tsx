@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
           className={({ isActive }) =>
             `relative w-9 h-9 rounded-full flex items-center justify-center transition-all active:scale-95 shrink-0 ${
               isActive
-                ? 'bg-neutral-900 text-white shadow-sm'
+                ? 'bg-[#7A1C3A] text-white hover:bg-[#61152D] shadow-sm'
                 : 'bg-white border border-black/8 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50 shadow-2xs'
             }`
           }

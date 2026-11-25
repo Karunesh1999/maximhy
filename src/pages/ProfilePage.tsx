@@ -531,7 +531,7 @@ export const ProfilePage: React.FC = () => {
 
           <button
             type="submit"
-            className="w-full py-3 bg-neutral-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-all shadow-sm mt-2"
+            className="w-full py-3 bg-[#7A1C3A] text-white rounded-xl text-xs font-bold hover:bg-[#61152D] transition-all shadow-sm mt-2"
           >
             Save Profile
           </button>
@@ -785,7 +785,7 @@ export const ProfilePage: React.FC = () => {
           <button
             type="button"
             onClick={() => navigate('/education')}
-            className="w-full py-2.5 bg-neutral-900 text-white rounded-xl text-xs font-bold hover:bg-black transition-all"
+            className="w-full py-2.5 bg-[#7A1C3A] text-white rounded-xl text-xs font-bold hover:bg-[#61152D] transition-all"
           >
             Explore Educational Guides
           </button>
@@ -809,7 +809,7 @@ export const ProfilePage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => navigate('/shop')}
-                className="mt-1 px-6 py-2.5 bg-neutral-900 text-white text-xs font-semibold rounded-full hover:bg-black transition-all shadow-xs"
+                className="mt-1 px-6 py-2.5 bg-[#7A1C3A] text-white text-xs font-semibold rounded-full hover:bg-[#61152D] transition-all shadow-xs"
               >
                 Browse Products
               </button>
@@ -862,7 +862,7 @@ export const ProfilePage: React.FC = () => {
                         e.stopPropagation()
                         addItem(product, 'pack', 1)
                       }}
-                      className="h-8 px-2.5 rounded-full bg-neutral-900 text-white text-[10px] font-semibold hover:bg-black transition-all flex items-center gap-1 active:scale-95"
+                      className="h-8 px-2.5 rounded-full bg-[#7A1C3A] text-white text-[10px] font-semibold hover:bg-[#61152D] transition-all flex items-center gap-1 active:scale-95"
                       title="Add to Cart"
                     >
                       <ShoppingBag className="w-3 h-3" />

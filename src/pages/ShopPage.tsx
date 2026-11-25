@@ -231,7 +231,7 @@ export const ShopPage: React.FC = () => {
             onClick={() => setShowFilterSheet(!showFilterSheet)}
             className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all active:scale-95 ${
               showFilterSheet
-                ? 'bg-neutral-900 text-white border-neutral-900 shadow-2xs'
+                ? 'bg-[#7A1C3A] text-white border-[#7A1C3A] hover:bg-[#61152D] shadow-2xs'
                 : sortBy !== 'featured' || hsaOnly
                 ? 'bg-primary/10 text-primary border-primary/30 font-bold shadow-2xs'
                 : 'bg-white text-neutral-700 border-black/8 hover:bg-neutral-50 shadow-2xs'
@@ -316,7 +316,7 @@ export const ShopPage: React.FC = () => {
               setSearchQuery('')
               handleSelectCategory('all')
             }}
-            className="mt-4 text-xs bg-neutral-900 text-white px-5 py-2 rounded-full font-semibold hover:bg-black"
+            className="mt-4 text-xs bg-[#7A1C3A] text-white px-5 py-2 rounded-full font-semibold hover:bg-[#61152D] transition-all"
           >
             Reset Filters
           </button>

@@ -113,7 +113,7 @@ export const CartPage: React.FC = () => {
           </p>
           <Link
             to="/shop"
-            className="mt-3 bg-neutral-900 text-white text-xs font-semibold px-6 py-3 rounded-full hover:bg-black transition-all shadow-xs"
+            className="mt-3 bg-[#7A1C3A] text-white text-xs font-semibold px-6 py-3 rounded-full hover:bg-[#61152D] transition-all shadow-xs"
           >
             Start Shopping
           </Link>
@@ -225,7 +225,7 @@ export const CartPage: React.FC = () => {
             <button
               type="button"
               onClick={handleStartCheckout}
-              className="w-full bg-neutral-900 text-white rounded-full py-4 px-6 text-sm font-semibold shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
+              className="w-full bg-[#7A1C3A] text-white rounded-full py-4 px-6 text-sm font-semibold shadow-md hover:bg-[#61152D] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2"
             >
               <span>Proceed to checkout</span>
             </button>
@@ -343,7 +343,7 @@ export const CartPage: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs mt-2 hover:bg-black transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-98"
+                  className="w-full bg-[#7A1C3A] text-white py-3.5 rounded-full font-semibold text-xs mt-2 hover:bg-[#61152D] transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-98"
                 >
                   <span>Continue to Payment</span>
                   <ChevronRight className="w-4 h-4" />
@@ -372,7 +372,7 @@ export const CartPage: React.FC = () => {
                         onClick={() => setFormData({ ...formData, paymentMethod: method })}
                         className={`py-2 px-1 rounded-xl text-xs font-semibold border transition-all text-center ${
                           formData.paymentMethod === method
-                            ? 'bg-neutral-900 text-white border-neutral-900 shadow-2xs'
+                            ? 'bg-[#7A1C3A] text-white border-[#7A1C3A] hover:bg-[#61152D] shadow-2xs'
                             : 'bg-neutral-50 border-black/6 text-neutral-600 hover:bg-white'
                         }`}
                       >
@@ -411,7 +411,7 @@ export const CartPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleCompleteOrder}
-                    className="w-2/3 bg-neutral-900 text-white py-3 rounded-full font-semibold text-xs hover:bg-black transition-all shadow-sm active:scale-98"
+                    className="w-2/3 bg-[#7A1C3A] text-white py-3 rounded-full font-semibold text-xs hover:bg-[#61152D] transition-all shadow-sm active:scale-98"
                   >
                     Complete Order (${total.toFixed(2)})
                   </button>
@@ -450,7 +450,7 @@ export const CartPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleFinish}
-                  className="w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs hover:bg-black transition-all mt-2 shadow-sm"
+                  className="w-full bg-[#7A1C3A] text-white py-3.5 rounded-full font-semibold text-xs hover:bg-[#61152D] transition-all mt-2 shadow-sm"
                 >
                   Continue Shopping
                 </button>

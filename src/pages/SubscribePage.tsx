@@ -79,7 +79,7 @@ export const SubscribePage: React.FC = () => {
                 onClick={() => setFrequency(days)}
                 className={`py-2.5 px-3 rounded-full text-xs font-semibold transition-all border ${
                   isSelected
-                    ? 'bg-neutral-900 text-white border-neutral-900 shadow-xs'
+                    ? 'bg-[#7A1C3A] text-white border-[#7A1C3A] hover:bg-[#61152D] shadow-xs'
                     : 'bg-white text-neutral-600 border-black/8 hover:border-black/20'
                 }`}
               >
@@ -182,7 +182,7 @@ export const SubscribePage: React.FC = () => {
           type="button"
           disabled={selectedItems.length === 0}
           onClick={handleStartSubscription}
-          className="w-full bg-neutral-900 text-white py-3.5 px-4 rounded-full font-semibold text-xs shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1 disabled:opacity-40"
+          className="w-full bg-[#7A1C3A] text-white py-3.5 px-4 rounded-full font-semibold text-xs shadow-md hover:bg-[#61152D] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-1 disabled:opacity-40"
         >
           <span>Activate MyPeriodPlan</span>
           <ArrowRight className="w-4 h-4" />
@@ -204,7 +204,7 @@ export const SubscribePage: React.FC = () => {
             </p>
             <button
               onClick={() => setIsSuccessModalOpen(false)}
-              className="mt-3 w-full bg-neutral-900 text-white py-3.5 rounded-full font-semibold text-xs hover:bg-black"
+              className="mt-3 w-full bg-[#7A1C3A] text-white py-3.5 rounded-full font-semibold text-xs hover:bg-[#61152D] transition-all"
             >
               Done
             </button>

@@ -31,7 +31,7 @@ export const BottomNav: React.FC = () => {
                 <>
                   <div
                     className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${isActive
-                      ? 'w-8 h-8 bg-neutral-900 text-white shadow-sm'
+                      ? 'w-8 h-8 bg-[#7A1C3A] text-white shadow-sm'
                       : 'w-8 h-8 text-neutral-600 group-hover:text-neutral-900 group-hover:bg-neutral-100'
                       }`}
                   >
