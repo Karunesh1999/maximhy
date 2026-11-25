@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useMemo, useEffect } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   Package,
   Truck,
@@ -88,11 +88,48 @@ export function saveOrderToStorage(newOrder: OrderRecord): void {
   }
 }
 
+const TRACKING_STEPS: OrderRecord['status'][] = ['Processing', 'In Transit', 'Delivered']
+
 export const OrdersPage: React.FC = () => {
   const navigate = useNavigate()
-  const [orders] = useState<OrderRecord[]>(() => getStoredOrders())
+  const [searchParams] = useSearchParams()
+  const [orders, setOrders] = useState<OrderRecord[]>(() => getStoredOrders())
   const [statusFilter, setStatusFilter] = useState<'all' | 'In Transit' | 'Delivered'>('all')
-  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null)
+  const [expandedOrderId, setExpandedOrderId] = useState<string | null>(() => searchParams.get('track'))
+
+  useEffect(() => {
+    const trackId = searchParams.get('track')
+    if (trackId) {
+      setExpandedOrderId(trackId)
+    }
+  }, [searchParams])
+
+  const handleAdvanceStatus = (orderId: string) => {
+    setOrders((prev) => {
+      const updated = prev.map((order) => {
+        if (order.id !== orderId) return order
+        const currentIdx = TRACKING_STEPS.indexOf(order.status)
+        if (currentIdx === -1 || currentIdx >= TRACKING_STEPS.length - 1) return order
+        const nextStatus = TRACKING_STEPS[currentIdx + 1]
+        return {
+          ...order,
+          status: nextStatus,
+          deliveryEstimate:
+            nextStatus === 'Delivered'
+              ? 'Delivered to Doorstep'
+              : nextStatus === 'In Transit'
+              ? 'Arriving Tomorrow'
+              : order.deliveryEstimate,
+        }
+      })
+      try {
+        localStorage.setItem('maximhy_orders', JSON.stringify(updated))
+      } catch {
+        // ignore storage errors
+      }
+      return updated
+    })
+  }
 
   const filteredOrders = useMemo(() => {
     if (statusFilter === 'all') return orders
@@ -243,9 +280,9 @@ export const OrdersPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setExpandedOrderId(isExpanded ? null : order.id)}
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-neutral-500 hover:text-neutral-900"
+                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#7A1C3A] hover:text-[#61152D]"
                   >
-                    <span>Details</span>
+                    <span>{isExpanded ? 'Hide Tracking' : 'Track Order'}</span>
                     {isExpanded ? (
                       <ChevronUp className="w-3.5 h-3.5" />
                     ) : (
@@ -255,18 +292,82 @@ export const OrdersPage: React.FC = () => {
                 </div>
 
                 {isExpanded && (
-                  <div className="bg-neutral-50 rounded-2xl p-3 text-[11px] text-neutral-600 space-y-1.5 border border-black/5 animate-in fade-in duration-150">
-                    {order.shippingAddress && (
-                      <div>
-                        <span className="font-semibold text-neutral-800">Shipping Address: </span>
-                        <span>{order.shippingAddress}</span>
+                  <div className="bg-neutral-50 rounded-2xl p-3.5 text-[11px] text-neutral-600 space-y-3 border border-black/5 animate-in fade-in duration-150">
+                    {/* 3-Step Visual Order Status Tracking */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-neutral-900">Order Status Tracking</span>
+                        <span className="text-[10px] font-mono text-neutral-500">
+                          TRK-{order.id.replace(/[^A-Z0-9]/gi, '')}
+                        </span>
                       </div>
-                    )}
-                    {order.paymentMethod && (
-                      <div>
-                        <span className="font-semibold text-neutral-800">Payment: </span>
-                        <span>{order.paymentMethod}</span>
+
+                      <div className="flex items-center justify-between gap-1 pt-1">
+                        {TRACKING_STEPS.map((step, idx) => {
+                          const currentIdx = TRACKING_STEPS.indexOf(order.status)
+                          const isCompleted = idx <= currentIdx
+                          const isLast = idx === TRACKING_STEPS.length - 1
+
+                          return (
+                            <React.Fragment key={step}>
+                              <div className="flex flex-col items-center gap-1 shrink-0">
+                                <div
+                                  className={`w-6 h-6 rounded-full flex items-center justify-center border transition-all ${
+                                    isCompleted
+                                      ? 'bg-[#7A1C3A] border-[#7A1C3A] text-white'
+                                      : 'bg-white border-neutral-300 text-neutral-400'
+                                  }`}
+                                >
+                                  {isCompleted ? (
+                                    <CheckCircle2 className="w-3.5 h-3.5" />
+                                  ) : (
+                                    <Clock className="w-3 h-3" />
+                                  )}
+                                </div>
+                                <span
+                                  className={`text-[10px] font-semibold ${
+                                    isCompleted ? 'text-neutral-900' : 'text-neutral-400'
+                                  }`}
+                                >
+                                  {step}
+                                </span>
+                              </div>
+                              {!isLast && (
+                                <div
+                                  className={`flex-1 h-0.5 rounded-full -mt-4 ${
+                                    idx < currentIdx ? 'bg-[#7A1C3A]' : 'bg-neutral-200'
+                                  }`}
+                                />
+                              )}
+                            </React.Fragment>
+                          )
+                        })}
                       </div>
+                    </div>
+
+                    <div className="border-t border-black/5 pt-2 space-y-1">
+                      {order.shippingAddress && (
+                        <div>
+                          <span className="font-semibold text-neutral-800">Shipping Address: </span>
+                          <span>{order.shippingAddress}</span>
+                        </div>
+                      )}
+                      {order.paymentMethod && (
+                        <div>
+                          <span className="font-semibold text-neutral-800">Payment: </span>
+                          <span>{order.paymentMethod}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {order.status !== 'Delivered' && (
+                      <button
+                        type="button"
+                        onClick={() => handleAdvanceStatus(order.id)}
+                        className="w-full py-2 rounded-xl bg-[#FCE7F3] text-[#7A1C3A] hover:bg-pink-200 font-semibold text-[11px] transition-all"
+                      >
+                        Simulate Next Delivery Stage
+                      </button>
                     )}
                   </div>
                 )}

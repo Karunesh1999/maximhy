@@ -72,12 +72,17 @@ export const CartPage: React.FC = () => {
     })
 
     setOrderNumber(randomOrder)
+    clearCart()
     setCheckoutStep('success')
+  }
+
+  const handleTrackOrder = () => {
+    setIsCheckoutOpen(false)
+    navigate(`/orders?track=${orderNumber}`)
   }
 
   const handleFinish = () => {
     setIsCheckoutOpen(false)
-    clearCart()
     navigate('/shop')
   }
 
@@ -447,13 +452,22 @@ export const CartPage: React.FC = () => {
                   </div>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={handleFinish}
-                  className="w-full bg-[#7A1C3A] text-white py-3.5 rounded-full font-semibold text-xs hover:bg-[#61152D] transition-all mt-2 shadow-sm"
-                >
-                  Continue Shopping
-                </button>
+                <div className="flex flex-col gap-2 w-full mt-2">
+                  <button
+                    type="button"
+                    onClick={handleTrackOrder}
+                    className="w-full bg-[#7A1C3A] text-white py-3.5 rounded-full font-semibold text-xs hover:bg-[#61152D] transition-all shadow-sm"
+                  >
+                    Track Order Status
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleFinish}
+                    className="w-full bg-[#FCE7F3] text-[#7A1C3A] py-3 rounded-full font-semibold text-xs hover:bg-pink-200 transition-all"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
               </div>
             )}
           </div>
