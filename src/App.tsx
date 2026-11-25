@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { WishlistProvider } from './context/WishlistContext'
 import { Layout } from './components/Layout'
 import { DesktopDeviceFrame } from './components/DesktopDeviceFrame'
 import { SplashScreen } from './components/SplashScreen'
+import { OnboardingScreen } from './components/OnboardingScreen'
 import { ScrollToTop } from './components/ScrollToTop'
 import { HomePage } from './pages/HomePage'
 import { ShopPage } from './pages/ShopPage'
@@ -16,12 +17,28 @@ import { EducationPage } from './pages/EducationPage'
 import { FaqContactPage } from './pages/FaqContactPage'
 
 export const App: React.FC = () => {
-  const [showSplash, setShowSplash] = useState(true)
+  const [stage, setStage] = useState<'splash' | 'onboarding' | 'app'>('splash')
+
+  const handleSplashComplete = useCallback(() => {
+    if (window.location.pathname !== '/' || window.location.search !== '') {
+      window.history.replaceState(null, '', '/')
+    }
+    setStage('onboarding')
+  }, [])
+
+  const handleOnboardingComplete = useCallback(() => {
+    if (window.location.pathname !== '/' || window.location.search !== '') {
+      window.history.replaceState(null, '', '/')
+    }
+    setStage('app')
+  }, [])
 
   return (
     <DesktopDeviceFrame>
-      {showSplash ? (
-        <SplashScreen onComplete={() => setShowSplash(false)} />
+      {stage === 'splash' ? (
+        <SplashScreen onComplete={handleSplashComplete} />
+      ) : stage === 'onboarding' ? (
+        <OnboardingScreen onGetStarted={handleOnboardingComplete} />
       ) : (
         <CartProvider>
           <WishlistProvider>
