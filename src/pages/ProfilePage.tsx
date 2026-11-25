@@ -17,12 +17,20 @@ import {
   Mail,
   Phone,
   LogOut,
-  ExternalLink
+  ExternalLink,
+  Heart,
+  ShoppingBag,
+  Trash2
 } from 'lucide-react'
+import { useWishlist } from '../context/WishlistContext'
+import { useCart } from '../context/CartContext'
+import { ProductDetailModal } from '../components/ProductDetailModal'
+import type { Product } from '../types'
 
 type ProfileView =
   | 'menu'
   | 'profile'
+  | 'wishlist'
   | 'orders'
   | 'auto-delivery'
   | 'notifications'
@@ -32,7 +40,10 @@ type ProfileView =
 
 export const ProfilePage: React.FC = () => {
   const navigate = useNavigate()
+  const { wishlistProducts, wishlistCount, removeFromWishlist, clearWishlist } = useWishlist()
+  const { addItem } = useCart()
   const [activeView, setActiveView] = useState<ProfileView>('menu')
+  const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
 
   // Mock profile details
   const [profileData, setProfileData] = useState({
@@ -205,6 +216,7 @@ export const ProfilePage: React.FC = () => {
             <h1 className="text-base sm:text-lg font-bold text-neutral-900 tracking-tight leading-tight">
               {activeView === 'menu' && 'My Profile'}
               {activeView === 'profile' && 'Personal Info'}
+              {activeView === 'wishlist' && 'My Wishlist'}
               {activeView === 'orders' && 'Product Orders'}
               {activeView === 'auto-delivery' && 'Auto-Delivery Plan'}
               {activeView === 'notifications' && 'Notifications'}
@@ -225,6 +237,16 @@ export const ProfilePage: React.FC = () => {
             className="text-[11px] font-semibold text-primary hover:underline"
           >
             Mark all read
+          </button>
+        )}
+
+        {activeView === 'wishlist' && wishlistCount > 0 && (
+          <button
+            type="button"
+            onClick={clearWishlist}
+            className="text-[11px] font-semibold text-rose-600 hover:underline"
+          >
+            Clear all
           </button>
         )}
       </div>
@@ -317,7 +339,32 @@ export const ProfilePage: React.FC = () => {
               </div>
             </button>
 
-            {/* 2. Notifications */}
+            {/* 2. My Wishlist */}
+            <button
+              type="button"
+              onClick={() => setActiveView('wishlist')}
+              className="w-full px-4 py-3.5 flex items-center justify-between hover:bg-neutral-50 transition-colors text-left"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center">
+                  <Heart className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-neutral-900">My Wishlist</div>
+                  <div className="text-[10px] text-neutral-500">Saved organic essentials for later</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {wishlistCount > 0 && (
+                  <span className="text-[10px] bg-rose-100 text-rose-700 font-semibold px-2 py-0.5 rounded-full">
+                    {wishlistCount} saved
+                  </span>
+                )}
+                <ChevronRight className="w-4 h-4 text-neutral-400" />
+              </div>
+            </button>
+
+            {/* 3. Notifications */}
             <button
               type="button"
               onClick={() => setActiveView('notifications')}
@@ -858,6 +905,107 @@ export const ProfilePage: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* ===================== VIEW 9: WISHLIST ===================== */}
+      {activeView === 'wishlist' && (
+        <div className="flex flex-col gap-3 animate-in fade-in duration-150">
+          {wishlistProducts.length === 0 ? (
+            <div className="bg-white border border-black/8 rounded-2xl p-8 flex flex-col items-center text-center gap-3 shadow-2xs mt-2">
+              <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center">
+                <Heart className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-neutral-900">Your wishlist is empty</h3>
+                <p className="text-xs text-neutral-500 mt-1 max-w-xs">
+                  Tap the heart icon on any organic cotton product in the shop to save it here for quick access.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/shop')}
+                className="mt-1 px-6 py-2.5 bg-neutral-900 text-white text-xs font-semibold rounded-full hover:bg-black transition-all shadow-xs"
+              >
+                Browse Products
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between text-xs text-neutral-500 px-0.5">
+                <span>{wishlistCount} {wishlistCount === 1 ? 'item' : 'items'} saved</span>
+                <button
+                  type="button"
+                  onClick={() => navigate('/shop')}
+                  className="text-[11px] font-semibold text-primary hover:underline"
+                >
+                  + Add more
+                </button>
+              </div>
+
+              {wishlistProducts.map((product) => (
+                <div
+                  key={product.id}
+                  onClick={() => setSelectedProductForModal(product)}
+                  className="bg-white border border-black/8 rounded-2xl p-3 flex items-center gap-3 shadow-2xs hover:border-black/15 transition-all cursor-pointer"
+                >
+                  <div
+                    className={`w-16 h-16 rounded-xl ${
+                      product.pastelBg || 'bg-[#FDECEF]'
+                    } p-1.5 shrink-0 flex items-center justify-center overflow-hidden`}
+                  >
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-xs font-bold text-neutral-900 truncate">{product.name}</h4>
+                    <p className="text-[11px] text-neutral-500 truncate mt-0.5">
+                      {product.packCount} · {product.tagline}
+                    </p>
+                    <div className="text-xs font-extrabold text-neutral-900 mt-1">
+                      ${product.packPrice.toFixed(2)}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        addItem(product, 'pack', 1)
+                      }}
+                      className="h-8 px-2.5 rounded-full bg-neutral-900 text-white text-[10px] font-semibold hover:bg-black transition-all flex items-center gap-1 active:scale-95"
+                      title="Add to Cart"
+                    >
+                      <ShoppingBag className="w-3 h-3" />
+                      <span>Add</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        removeFromWishlist(product.id)
+                      }}
+                      className="w-8 h-8 rounded-full bg-rose-50 text-rose-500 hover:bg-rose-100 flex items-center justify-center transition-all active:scale-95"
+                      aria-label={`Remove ${product.name} from wishlist`}
+                      title="Remove from Wishlist"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+        </div>
+      )}
+
+      <ProductDetailModal
+        product={selectedProductForModal}
+        onClose={() => setSelectedProductForModal(null)}
+      />
     </div>
   )
 }

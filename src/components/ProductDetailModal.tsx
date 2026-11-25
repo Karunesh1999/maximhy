@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ArrowLeft, Heart, Star, Check, ShieldCheck, Plus, Minus } from 'lucide-react'
 import type { Product } from '../types'
 import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 
 interface ProductDetailModalProps {
   product: Product | null
@@ -10,12 +11,14 @@ interface ProductDetailModalProps {
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, onClose }) => {
   const { addItem } = useCart()
+  const { isWishlisted: checkWishlisted, toggleWishlist } = useWishlist()
   const [selectedType, setSelectedType] = useState<'pack' | 'case'>('pack')
   const [quantity, setQuantity] = useState(1)
-  const [isWishlisted, setIsWishlisted] = useState(false)
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'ingredients'>('overview')
 
   if (!product) return null
+
+  const isWishlisted = checkWishlisted(product.id)
 
   const handleAddToCart = () => {
     addItem(product, selectedType, quantity)
@@ -44,7 +47,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             </button>
 
             <button
-              onClick={() => setIsWishlisted(!isWishlisted)}
+              onClick={() => toggleWishlist(product.id)}
               className="w-10 h-10 rounded-full bg-white shadow-xs border border-black/5 flex items-center justify-center text-neutral-800 hover:bg-neutral-50 transition-all active:scale-95"
               aria-label="Wishlist"
             >

@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
+import { WishlistProvider } from './context/WishlistContext'
 import { Layout } from './components/Layout'
 import { DesktopDeviceFrame } from './components/DesktopDeviceFrame'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -17,23 +18,25 @@ export const App: React.FC = () => {
   return (
     <DesktopDeviceFrame>
       <CartProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="shop" element={<ShopPage />} />
-              <Route path="bundles" element={<BundlesPage />} />
-              <Route path="subscribe" element={<SubscribePage />} />
-              <Route path="cart" element={<CartPage />} />
-              <Route path="profile" element={<ProfilePage />} />
-              <Route path="about" element={<Navigate to="/#about" replace />} />
-              <Route path="education" element={<EducationPage />} />
-              <Route path="faq" element={<FaqContactPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <WishlistProvider>
+          <BrowserRouter>
+            <ScrollToTop />
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<HomePage />} />
+                <Route path="shop" element={<ShopPage />} />
+                <Route path="bundles" element={<BundlesPage />} />
+                <Route path="subscribe" element={<SubscribePage />} />
+                <Route path="cart" element={<CartPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="about" element={<Navigate to="/#about" replace />} />
+                <Route path="education" element={<EducationPage />} />
+                <Route path="faq" element={<FaqContactPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </WishlistProvider>
       </CartProvider>
     </DesktopDeviceFrame>
   )

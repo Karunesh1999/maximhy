@@ -18,10 +18,12 @@ import {
 import { PRODUCTS } from '../data/products'
 import type { Product, ProductCategory } from '../types'
 import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 import { ProductDetailModal } from '../components/ProductDetailModal'
 
 export const ShopPage: React.FC = () => {
   const { addItem } = useCart()
+  const { isWishlisted: checkWishlisted, toggleWishlist: toggleWishlistItem } = useWishlist()
   const [searchParams, setSearchParams] = useSearchParams()
   const categoryParam = (searchParams.get('category') as ProductCategory) || 'all'
   const [searchQuery, setSearchQuery] = useState('')
@@ -70,7 +72,6 @@ export const ShopPage: React.FC = () => {
     handleSelectCategory('all')
   }
   const [productTypeSelections, setProductTypeSelections] = useState<Record<string, 'pack' | 'case'>>({})
-  const [wishlist, setWishlist] = useState<Record<string, boolean>>({})
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null)
 
   const categoryIcons: { key: ProductCategory; label: string; icon: React.FC<{ className?: string }> }[] = [
@@ -116,10 +117,7 @@ export const ShopPage: React.FC = () => {
 
   const toggleWishlist = (productId: string, e: React.MouseEvent) => {
     e.stopPropagation()
-    setWishlist((prev) => ({
-      ...prev,
-      [productId]: !prev[productId],
-    }))
+    toggleWishlistItem(productId)
   }
 
   const handleAddProduct = (product: Product, e: React.MouseEvent) => {
@@ -328,7 +326,7 @@ export const ShopPage: React.FC = () => {
           {filteredProducts.map((product) => {
             const selectedType = productTypeSelections[product.id] || 'pack'
             const activePrice = selectedType === 'pack' ? product.packPrice : product.casePrice
-            const isWishlisted = !!wishlist[product.id]
+            const isWishlisted = checkWishlisted(product.id)
 
             return (
               <div
