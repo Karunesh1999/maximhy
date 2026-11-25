@@ -1,6 +1,6 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { Home, Store, Package, ShoppingBag, User } from 'lucide-react'
+import { Home, Store, Package, ShoppingBag } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 
 export const BottomNav: React.FC = () => {
@@ -11,7 +11,6 @@ export const BottomNav: React.FC = () => {
     { to: '/shop', label: 'Shop', icon: Store },
     { to: '/bundles', label: 'Bundles', icon: Package },
     { to: '/cart', label: 'Cart', icon: ShoppingBag, badge: totalCount },
-    { to: '/profile', label: 'Profile', icon: User, dot: true },
   ]
 
   return (
@@ -31,38 +30,28 @@ export const BottomNav: React.FC = () => {
               {({ isActive }) => (
                 <>
                   <div
-                    className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${
-                      isActive
-                        ? 'w-8 h-8 bg-neutral-900 text-white shadow-sm'
-                        : 'w-8 h-8 text-neutral-600 group-hover:text-neutral-900 group-hover:bg-neutral-100'
-                    }`}
+                    className={`relative flex items-center justify-center rounded-full transition-all duration-200 ${isActive
+                      ? 'w-8 h-8 bg-neutral-900 text-white shadow-sm'
+                      : 'w-8 h-8 text-neutral-600 group-hover:text-neutral-900 group-hover:bg-neutral-100'
+                      }`}
                   >
                     <Icon className="w-4 h-4" />
                     {Boolean(item.badge && item.badge > 0) && (
                       <span
-                        className={`absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs transition-colors ${
-                          isActive
-                            ? 'bg-primary text-white ring-1 ring-white'
-                            : 'bg-neutral-900 text-white'
-                        }`}
+                        className={`absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs transition-colors ${isActive
+                          ? 'bg-primary text-white ring-1 ring-white'
+                          : 'bg-neutral-900 text-white'
+                          }`}
                       >
                         {item.badge}
                       </span>
                     )}
-                    {Boolean(item.dot) && (
-                      <span
-                        className={`absolute top-0 right-0 w-2 h-2 rounded-full ${
-                          isActive ? 'bg-primary ring-1 ring-white' : 'bg-primary'
-                        }`}
-                      />
-                    )}
                   </div>
                   <span
-                    className={`text-[9.5px] tracking-tight mt-1 leading-none transition-colors whitespace-nowrap ${
-                      isActive
-                        ? 'font-semibold text-neutral-900'
-                        : 'font-medium text-neutral-500 group-hover:text-neutral-800'
-                    }`}
+                    className={`text-[9.5px] tracking-tight mt-1 leading-none transition-colors whitespace-nowrap ${isActive
+                      ? 'font-semibold text-neutral-900'
+                      : 'font-medium text-neutral-500 group-hover:text-neutral-800'
+                      }`}
                   >
                     {item.label}
                   </span>
