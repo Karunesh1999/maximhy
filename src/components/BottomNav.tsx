@@ -39,8 +39,8 @@ export const BottomNav: React.FC = () => {
                     {Boolean(item.badge && item.badge > 0) && (
                       <span
                         className={`absolute -top-1 -right-1 min-w-4 h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs transition-colors ${isActive
-                          ? 'bg-primary text-white ring-1 ring-white'
-                          : 'bg-neutral-900 text-white'
+                          ? 'bg-[#FCE7F3] text-[#7A1C3A] ring-1 ring-white'
+                          : 'bg-[#7A1C3A] text-white ring-1 ring-white'
                           }`}
                       >
                         {item.badge}
