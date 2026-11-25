@@ -234,22 +234,22 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             </div>
 
             {/* Stepper Pill */}
-            <div className="flex items-center bg-neutral-100 rounded-full p-1 gap-1 shrink-0 border border-black/5">
+            <div className="flex items-center bg-[#FCE7F3] rounded-full p-1 gap-1 shrink-0 border border-pink-200/60">
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90 transition-transform"
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#7A1C3A] hover:bg-pink-200 active:scale-90 transition-all"
                 aria-label="Decrease quantity"
               >
                 <Minus className="w-3.5 h-3.5" />
               </button>
-              <span className="w-5 text-center text-xs font-bold text-neutral-800 select-none">
+              <span className="w-5 text-center text-xs font-bold text-[#7A1C3A] select-none">
                 {quantity}
               </span>
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-7 h-7 rounded-full bg-white flex items-center justify-center text-neutral-700 hover:text-black shadow-2xs active:scale-90 transition-transform"
+                className="w-7 h-7 rounded-full flex items-center justify-center text-[#7A1C3A] hover:bg-pink-200 active:scale-90 transition-all"
                 aria-label="Increase quantity"
               >
                 <Plus className="w-3.5 h-3.5" />
@@ -260,7 +260,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product,
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-neutral-900 text-white rounded-full py-3.5 px-4 font-semibold text-xs sm:text-sm shadow-md hover:bg-black active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
+              className="flex-1 bg-[#7A1C3A] text-white rounded-full py-3.5 px-4 font-semibold text-xs sm:text-sm shadow-md hover:bg-[#61152D] active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 whitespace-nowrap"
             >
               Add to cart
             </button>

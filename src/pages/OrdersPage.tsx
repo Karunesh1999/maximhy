@@ -276,7 +276,7 @@ export const OrdersPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => navigate('/shop')}
-                    className="flex-1 bg-neutral-900 text-white text-xs font-semibold py-2 px-4 rounded-full hover:bg-black active:scale-95 transition-all flex items-center justify-center gap-1.5 shadow-2xs"
+                    className="flex-1 bg-[#7A1C3A] text-white text-xs font-semibold py-2 px-4 rounded-full hover:bg-[#61152D] active:scale-95 transition-all flex items-center justify-center gap-1.5 shadow-2xs"
                   >
                     <RotateCcw className="w-3.5 h-3.5" />
                     <span>Buy Again</span>
@@ -284,7 +284,7 @@ export const OrdersPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => navigate('/faq')}
-                    className="py-2 px-3.5 rounded-full border border-black/10 text-xs font-semibold text-neutral-600 hover:bg-neutral-50 active:scale-95 transition-all flex items-center gap-1"
+                    className="py-2 px-3.5 rounded-full bg-[#FCE7F3] border-none text-xs font-semibold text-[#7A1C3A] hover:bg-pink-200 active:scale-95 transition-all flex items-center gap-1"
                   >
                     <HelpCircle className="w-3.5 h-3.5" />
                     <span>Help</span>
