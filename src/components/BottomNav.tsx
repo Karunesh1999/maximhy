@@ -14,9 +14,9 @@ export const BottomNav: React.FC = () => {
   ]
 
   return (
-    <div className="fixed bottom-4 left-0 right-0 z-40 flex justify-center pointer-events-none px-4 max-w-md mx-auto">
+    <div className="fixed bottom-4 left-0 right-0 z-40 flex justify-center pointer-events-none px-7 max-w-md mx-auto">
       {/* Floating Pill Navigation */}
-      <nav className="pointer-events-auto w-full bg-white/95 backdrop-blur-xl border border-black/8 rounded-full shadow-[0_12px_32px_-6px_rgba(0,0,0,0.16),0_4px_12px_-2px_rgba(0,0,0,0.08)] px-2 py-2 flex items-center justify-around">
+      <nav className="pointer-events-auto w-full max-w-[320px] bg-white/95 backdrop-blur-xl border border-black/8 rounded-full shadow-[0_12px_32px_-6px_rgba(0,0,0,0.16),0_4px_12px_-2px_rgba(0,0,0,0.08)] px-2.5 py-2 flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon
           return (
