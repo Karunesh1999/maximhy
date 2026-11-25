@@ -7,12 +7,12 @@ interface OnboardingScreenProps {
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onGetStarted }) => {
   return (
-    <div className="fixed inset-0 z-50 w-full h-full bg-[#F5E4D6] flex flex-col justify-between overflow-hidden animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 w-full h-full bg-[#F7F6F4] flex flex-col justify-between overflow-hidden animate-in fade-in duration-300">
       {/* Full-Screen Edge-to-Edge Ultra 4K Image */}
       <img
         src="/images/onboarding-hero.jpg"
         alt="Pure Organic Period Care"
-        className="absolute inset-0 w-full h-full object-cover object-top"
+        className="absolute inset-0 w-full h-full object-cover object-center"
         loading="eager"
       />
 
